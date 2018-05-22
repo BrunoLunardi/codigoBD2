@@ -12,5 +12,23 @@
 */
 
 Route::get('/', function () {
+
     return view('welcome');
 });
+
+
+Route::get('/home', function () {
+    $results = DB::select('select * from estado');
+
+    foreach($results as $table){
+    	foreach ($table as $tupla) {
+    		echo $tupla," ";
+    	}
+    	echo "<br>";
+	}
+return view('welcome');
+});
+
+Route::get('/showTable/{tName?}','selectController@index');
+Route::get('/searchIDHM/{search?}','selectController@searchIDHM')->name('selectRoute');
+Route::get('/teste/{auxiliar?}','selectController@teste');
