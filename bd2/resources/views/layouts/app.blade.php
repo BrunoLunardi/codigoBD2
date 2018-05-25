@@ -31,7 +31,7 @@
                 <div class="navbar-header" >
 
 
-<a href="{{ url('/') }}"> TRABALHO DA VANESSA BD2 FINAL </a>
+<a  href="{{ url('/') }}"><h1> TRABALHO DA VANESSA BD2 FINAL </h1></a>
 <br>
 <br>
                     <!-- Collapsed Hamburger -->

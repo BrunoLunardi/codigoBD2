@@ -1,26 +1,19 @@
-@extends('layouts.app')
-
-@section('content')
+@extends('layouts.app') @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-offset-1">
-
-                <div class="panel-group" style="text-align: center;">
-                  <table>
-                    <tr>
-                      <td style="padding: 8px;">
-                  <div class="panel panel-info animatedLong fadeIn">
-                    <table>
-  <div class="panel-heading animatedLong fadeInDown" style="text-align: center;"><i class="material-icons" style="font-size:50px;">school</i><h3>Banco de Dados</div>
-
+      <div class="panel-group" style="text-align: center; margin-left: 250px;" >
+        <table>
+          <tr>
+            <td style="padding: 8px;">
+              <div class="panel panel-info animatedLong fadeIn">
+                <table>
+                  <div class="panel-heading animatedLong fadeInDown" style="text-align: center;"><i class="material-icons" style="font-size:50px;">school</i>
+                    <h3>Banco de Dados</div>
   <div class="panel-body animatedLong fadeInDown" style="text-align: center;">
-    
       <tr>
-    <td style="padding: 8px;"> <a href="" class="btn btn-primary" style="width: 200px;">Pesquisar</a> </td>
+    <td style="padding: 8px;"> <a href="/searchIDHM/,,," class="btn btn-primary" style="width: 200px;">Pesquisar</a> </td>
   </table>
 </div>
 </div>
-
 </td>
 <td>
 
@@ -45,6 +38,5 @@
 </table>
             </div>
         </div>
-    </div>
-  </div>
+
 @endsection
