@@ -22,7 +22,7 @@
   <div class="panel-body animatedLong fadeInDown">
     <table>
       <tr>
-        <td style="padding: 8px;"><a href="" class="btn btn-success" style="width: 200px;">Relatório 1</a></td>
+        <td style="padding: 8px;"><a href="{{'/geoRelatorio/'}}" class="btn btn-success" style="width: 200px;">Relatório 1</a></td>
         <td><a href="" class="btn btn-success" style="width: 200px;">Relatório 2</a></td>
       </tr>
       <tr>
