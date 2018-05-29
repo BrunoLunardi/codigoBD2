@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\vwindicativosmunest;
+
+use App\vwconsidhm;
+use App\vwhistoricoidhm;
+use App\vwconsidh;
 
 class selectController extends Controller
 {
@@ -26,7 +29,7 @@ class selectController extends Controller
 	}
 
 	public function teste(Request $request){
-			$teste = vwindicativosmunest::all();
+			$teste = vwconsidhm::all();
 
 			foreach($teste as $row){
 				echo $row->id_estado;
@@ -74,79 +77,66 @@ class selectController extends Controller
 	  		array_push($where,['classificacao','=', $searchFilters[3]]);
 			}
 
-			$result = vwindicativosmunest::where ($where)->get();
-
-			foreach($where as $aux)
-			foreach($aux as $r)
-				echo $r;
-
-			foreach($result as $row){
-				echo $row->id_estado;
-				echo " | ";
-				echo $row->nome_estado;
-				echo " | ";
-				echo $row->id_municipio;
-				echo " | ";
-				echo $row->nome_municipio;
-				echo " | ";
-				echo $row->tmortalidade_municipio;
-				echo " | ";
-				echo $row->tanalfabetismo_municipio;
-				echo " | ";
-				echo $row->tidhm;
-				echo " | ";
-				echo $row->trendapercapita_municipio;
-				echo " | ";
-				echo $row->ano;
-				echo " | ";
-				echo $row->classificacao;
-				echo "<br>";
-			}
-
-			return;
-
+			$result = vwconsidhm::where ($where)->get();
+			return view('selectView',['tables'=>$result]);
 		}
 
-		$result = vwindicativosmunest::all();
-
-				  foreach($result as $row){
-						echo $row->id_estado;
-						echo " | ";
-						echo $row->nome_estado;
-						echo " | ";
-						echo $row->id_municipio;
-						echo " | ";
-						echo $row->nome_municipio;
-						echo " | ";
-						echo $row->tmortalidade_municipio;
-						echo " | ";
-						echo $row->tanalfabetismo_municipio;
-						echo " | ";
-						echo $row->tidhm;
-						echo " | ";
-						echo $row->trendapercapita_municipio;
-						echo " | ";
-						echo $row->ano;
-						echo " | ";
-						echo $row->classificacao;
-						echo "<br>";
-					}
-
-					return;
-
-//		return view('selectView',['tables'=>$result]);
-
+		$result = vwconsidhm::all();
+		return view('selectView',['tables'=>$result]);
 	}
 
-	private function findEstadoID($eName){
-		$where = 'select id_estado from estado where nome_estado = ';
-		$where .= $eName;
-		return DB::select($where);
+	public function searchIDH(Request $request){
+		$where = array();
+
+		if(request('search') != ',,'){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_estado','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[1]]);
+			}
+
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['classificacao','=', $searchFilters[2]]);
+			}
+
+			$result = vwconsidh::where ($where)->get();
+
+			foreach($result as $row){
+				echo $row->nome_estado;
+				echo $row->idh;
+				echo $row->ano;
+				echo $row->classificacao;
+				echo '<br>';
+			}
+
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsidh::all();
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->idh;
+			echo $row->ano;
+			echo $row->classificacao;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
 	}
 
-	private function findMunicioID($mName){
-		$where = 'select id_municipio from municipio where nome_municipio = ';
-		$where .= $mName;
-		return DB::select($where);
+	public function searchHistoricoIDHM(Request $request){
+		$result = vwhistoricoidhm::where ('nome_municipio',request('nomeMunicipio'))->get();
+
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->idhm;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
 	}
 }

@@ -31,4 +31,6 @@ return view('welcome');
 
 Route::get('/showTable/{tName?}','selectController@index');
 Route::get('/searchIDHM/{search?}','selectController@searchIDHM')->name('selectRoute');
+Route::get('/searchIDH/{search?}','selectController@searchIDH')->name('selectRoute');
+Route::get('/searchHistoricoIDHM/{nomeMunicipio?}','selectController@searchHistoricoIDHM');
 Route::get('/teste/{auxiliar?}','selectController@teste');
