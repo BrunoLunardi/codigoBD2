@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\vwindicativosmunest;
 
 class selectController extends Controller
 {
@@ -12,10 +13,10 @@ class selectController extends Controller
 			if($request['tName'] != NULL)
 			{
 
-			$sql = 'select * from ';
-			$sql .= $request['tName'];
+			$where = 'select * from ';
+			$where .= $request['tName'];
 
-		 	$table = DB::select($sql);
+		 	$table = DB::select($where);
 
 		 	if($table == null)
 		 		echo "Tabela Nula";
@@ -25,73 +26,127 @@ class selectController extends Controller
 	}
 
 	public function teste(Request $request){
-			$str = preg_split('~,~',request('auxiliar'));
+			$teste = vwindicativosmunest::all();
 
-			for($i = 0; $i < 4; $i++) {
-				if($str[$i] == NULL){
-					echo 'I CUZAO';
-				}
-					echo $str[$i];
-					echo '<br>';
+			foreach($teste as $row){
+				echo $row->id_estado;
+				echo " | ";
+				echo $row->nome_estado;
+				echo " | ";
+				echo $row->id_municipio;
+				echo " | ";
+				echo $row->nome_municipio;
+				echo " | ";
+				echo $row->tmortalidade_municipio;
+				echo " | ";
+				echo $row->tanalfabetismo_municipio;
+				echo " | ";
+				echo $row->tidhm;
+				echo " | ";
+				echo $row->trendapercapita_municipio;
+				echo " | ";
+				echo $row->ano;
+				echo " | ";
+				echo $row->classificacao;
+				echo "<br>";
 			}
 	}
 
 	public function searchIDHM(Request $request){
-		$search = new selectController();
+		$where = array();
 
-		$sql = 'select indicativos_municipio.*, municipio.nome_municipio, estado.nome_estado,municipio.id_estado
-		from indicativos_municipio
-		inner join municipio
-		on municipio.id_municipio = indicativos_municipio.id_municipio
-		inner join estado
-		on municipio.id_estado = estado.id_estado';
-
-		if(request()->has('search') && request('search') != ',,,'){
-			$sql .= ' where';
+		if(request('search') != ',,,'){
 			$searchFilters = preg_split('~,~',request('search'));
-			$needAND = false;
 
 			if($searchFilters[0] != NULL){
-				$sql .= ' municipio.nome_municipio = '.$searchFilters[0];
+				array_push($where,['nome_municipio','=', $searchFilters[0]]);
 			}
 
 			if($searchFilters[1] != NULL){
-				if($searchFilters[0] != NULL){
-					$sql .= ' AND';
-				}
-	  		$sql .= ' estado.nome_estado = '.$searchFilters[1];
+	  		array_push($where,['nome_estado','=', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
-				if($searchFilters[1] != NULL || $searchFilters[0] != NULL){
-					$sql .= ' AND';
-				}
-	  		$sql .= ' indicativos_municipio.ano = '.$searchFilters[2];
+	  		array_push($where,['ano','=', $searchFilters[2]]);
 			}
 
 			if($searchFilters[3] != NULL){
-				if($searchFilters[2] != NULL || $searchFilters[1] != NULL || $searchFilters[0] != NULL){
-					$sql .= ' AND';
-				}
-	  		$sql .= ' indicativos_municipio.classificacao = '.$searchFilters[3];
+	  		array_push($where,['classificacao','=', $searchFilters[3]]);
 			}
+
+			$result = vwindicativosmunest::where ($where)->get();
+
+			foreach($where as $aux)
+			foreach($aux as $r)
+				echo $r;
+
+			foreach($result as $row){
+				echo $row->id_estado;
+				echo " | ";
+				echo $row->nome_estado;
+				echo " | ";
+				echo $row->id_municipio;
+				echo " | ";
+				echo $row->nome_municipio;
+				echo " | ";
+				echo $row->tmortalidade_municipio;
+				echo " | ";
+				echo $row->tanalfabetismo_municipio;
+				echo " | ";
+				echo $row->tidhm;
+				echo " | ";
+				echo $row->trendapercapita_municipio;
+				echo " | ";
+				echo $row->ano;
+				echo " | ";
+				echo $row->classificacao;
+				echo "<br>";
+			}
+
+			return;
+
 		}
 
-		$result = DB::select($sql);
+		$result = vwindicativosmunest::all();
 
-			return view('selectView',['tables'=>$result]);
+				  foreach($result as $row){
+						echo $row->id_estado;
+						echo " | ";
+						echo $row->nome_estado;
+						echo " | ";
+						echo $row->id_municipio;
+						echo " | ";
+						echo $row->nome_municipio;
+						echo " | ";
+						echo $row->tmortalidade_municipio;
+						echo " | ";
+						echo $row->tanalfabetismo_municipio;
+						echo " | ";
+						echo $row->tidhm;
+						echo " | ";
+						echo $row->trendapercapita_municipio;
+						echo " | ";
+						echo $row->ano;
+						echo " | ";
+						echo $row->classificacao;
+						echo "<br>";
+					}
+
+					return;
+
+//		return view('selectView',['tables'=>$result]);
 
 	}
 
 	private function findEstadoID($eName){
-		$sql = 'select id_estado from estado where nome_estado = ';
-		$sql .= $eName;
-		return DB::select($sql);
+		$where = 'select id_estado from estado where nome_estado = ';
+		$where .= $eName;
+		return DB::select($where);
 	}
 
 	private function findMunicioID($mName){
-		$sql = 'select id_municipio from municipio where nome_municipio = ';
-		$sql .= $mName;
-		return DB::select($sql);
+		$where = 'select id_municipio from municipio where nome_municipio = ';
+		$where .= $mName;
+		return DB::select($where);
 	}
 }
