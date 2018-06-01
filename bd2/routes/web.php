@@ -33,4 +33,4 @@ Route::get('/home', function () {
 Route::get('/showTable/{tName?}', 'selectController@index');
 Route::get('/searchIDHM/{search?}', 'selectController@searchIDHM')->name('selectRoute');
 Route::get('/teste/{auxiliar?}', 'selectController@teste');
-Route::get('/geoRelatorio/{search?}', 'geoController@index');
+Route::get('/geoRelatorio','geoController@index')->name('geoRelatorio');

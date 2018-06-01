@@ -13,7 +13,7 @@ class geoController extends Controller
 
 
         $popularity->addStringColumn('Country')
-           ->addNumberColumn('Popularity')
+           ->addNumberColumn('IDH')
            ->addRow(array('São Paulo', 100))
            ->addRow(array('Amapá', 200))
            ->addRow(array('Amazonas', 300))
@@ -24,7 +24,8 @@ class geoController extends Controller
         'resolution' => 'provinces',
 
         ]);
-
         return view('geoView');
+
     }
+
 }
