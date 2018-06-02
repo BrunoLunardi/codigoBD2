@@ -34,3 +34,4 @@ Route::get('/showTable/{tName?}', 'selectController@index');
 Route::get('/searchIDHM/{search?}', 'selectController@searchIDHM')->name('selectRoute');
 Route::get('/teste/{auxiliar?}', 'selectController@teste');
 Route::get('/geoRelatorio','geoController@index')->name('geoRelatorio');
+Route::get('/historicoIDH','historicoIDHController@index')->name('historicoIDH');
