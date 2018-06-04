@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
-use App\vwconsidhm;
-use App\vwhistoricoidhm;
-use App\vwconsidh;
+use App\vwconsidhm;//Relatorio 1 - Model
+use App\vwhistoricoidhm;//Relatorio 2 - Model
+use App\vwconsidh;//Relatorio 3 - Model
+use App\vwhistoricoidh;//Relatorio 4 - Model
+use App\vwconsmortmun;//Relatorio 5 - Model
+use App\vwhistoricomortmun;//Relatorio 6 - Model
+use App\vwconsmortest;//Relatorio 7 e 8 - Model
+use App\vwconsanalfmun;//Relatorio 9 e 10 - Model
 
 class selectController extends Controller
 {
-		public function index(Request $request){
+	public function index(Request $request){
 
 			if($request['tName'] != NULL)
 			{
@@ -55,6 +60,7 @@ class selectController extends Controller
 			}
 	}
 
+//Relatorio 1
 	public function searchIDHM(Request $request){
 		$where = array();
 
@@ -85,6 +91,7 @@ class selectController extends Controller
 		return view('selectView',['tables'=>$result]);
 	}
 
+//Relatorio 3
 	public function searchIDH(Request $request){
 		$where = array();
 
@@ -113,6 +120,7 @@ class selectController extends Controller
 				echo '<br>';
 			}
 
+			return;
 			//return view('selectView',['tables'=>$result]);
 		}
 
@@ -127,6 +135,7 @@ class selectController extends Controller
 		//return view('selectView',['tables'=>$result]);
 	}
 
+//Relatorio 2
 	public function searchHistoricoIDHM(Request $request){
 		$result = vwhistoricoidhm::where ('nome_municipio',request('nomeMunicipio'))->get();
 
@@ -139,4 +148,182 @@ class selectController extends Controller
 		}
 		//ALGUM RETURN QUE VAI PRA VIEW
 	}
+
+//Relatorio 4
+	public function searchHistoricoIDH(Request $request){
+		$result = vwhistoricoidh::where ('nome_estado',request('nomeEstado'))->get();
+
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->idh;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+//Relatorio 5
+	public function searchMortMun(Request $request){
+		$where = array();
+
+		if(request('search') != ',,'){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['sigla','=', $searchFilters[1]]);
+			}
+
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[2]]);
+			}
+
+			$result = vwconsmortmun::where ($where)->get();
+
+			foreach($result as $row){
+				echo $row->nome_municipio;
+				echo $row->sigla;
+				echo $row->tmortalidade_municipio;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsmortmun::all();
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->sigla;
+			echo $row->tmortalidade_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 6
+	public function searchHistoricoMortMun(Request $request){
+		$result = vwhistoricomortmun::where ('nome_municipio',request('nomeMunicipio'))->get();
+
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->tmortalidade_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+//Relatorio 7
+	public function searchMortEst(Request $request){
+		$where = array();
+
+		if(request('search') != ','){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_estado','LIKE', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[1]]);
+			}
+
+			$result = vwconsmortest::where ($where)->get();
+
+			foreach($result as $row){
+				echo $row->nome_estado;
+				echo $row->tmortalidade_estado;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsmortest::all();
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->tmortalidade_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 8
+	public function searchHistoricoMortEst(Request $request){
+		$result = vwconsanalfmun::where ('nome_estado',request('nomeEstado'))->get();
+			//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->tmortalidade_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+//Relatorio 9
+	public function searchAnalfMun(Request $request){
+		$where = array();
+		if(request('search') != ',,'){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['nome_estado','=', $searchFilters[1]]);
+			}
+
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[2]]);
+			}
+
+			$result =	vwconsanalfmun::where ($where)->get();
+
+			foreach($result as $row){
+				echo $row->nome_municipio;
+				echo $row->sigla;
+				echo $row->tanalfabetismo_municipio;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsanalfmun::all();
+
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->sigla;
+			echo $row->tanalfabetismo_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 10
+	public function searchHistoricoAnalfMun(Request $request){
+		$result = vwconsanalfmun::where ('nome_municipio',request('nomeMunicipio'))->get();
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+  	foreach($result as $row){
+	  	echo $row->nome_municipio;
+			echo $row->tanalfabetismo_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
 }
