@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
+
+use App\Http\Controllers\Graficos; // Controlador dos graficos
 use App\vwconsidhm;//Relatorio 1 - Model
 use App\vwhistoricoidhm;//Relatorio 2 - Model
 use App\vwconsidh;//Relatorio 3 - Model
@@ -84,11 +86,14 @@ class selectController extends Controller
 			}
 
 			$result = vwconsidhm::where ($where)->get();
-			return view('selectView',['tables'=>$result]);
-		}
 
+		}
+		else {
 		$result = vwconsidhm::all();
-		return view('selectView',['tables'=>$result]);
+	}
+$graficos = new Graficos();
+$graficos->graficoLinha($result);
+
 	}
 
 //Relatorio 3

@@ -23,7 +23,7 @@
     <table>
       <tr>
         <td style="padding: 8px;"><a href="{{'index.php/geoRelatorio'}}" class="btn btn-success" style="width: 200px;">Geo Relatório</a></td>
-        <td><a href="{{'index.php/historicoIDH'}}" class="btn btn-success" style="width: 200px;">historicoIDH</a></td>
+        <td><a href="{{'index.php/searchIDHM?search=,,,'}}" class="btn btn-success" style="width: 200px;">historicoIDH</a></td>
       </tr>
       <tr>
         <td><a href="" class="btn btn-success" style="width: 200px;">Relatório 3</a></td>
