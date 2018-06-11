@@ -53,3 +53,7 @@ Route::get('/searchHistoricoMortEst/{nomeEstado?}','selectController@searchHisto
 Route::get('/searchAnalfMun/{search?}','selectController@searchAnalfMun');
 //Relatorio 10
 Route::get('/searchHistoricoAnalfMun/{nomeMunicipio?}','selectController@searchHistoricoAnalfMun');
+//Relatorio 11
+Route::get('/searchAnalfEst/{search?}','selectController@searchAnalfEst');
+//Relatorio 12
+Route::get('/searchHistoricoAnalEst/{nomeEstado?}','selectController@searchHistoricoAnalfEst');

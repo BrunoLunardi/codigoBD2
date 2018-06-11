@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
+use App\Http\Controllers\Graficos; // Controlador dos graficos
+
+//Modelos
 use App\vwconsidhm;//Relatorio 1 - Model
 use App\vwhistoricoidhm;//Relatorio 2 - Model
 use App\vwconsidh;//Relatorio 3 - Model
@@ -13,6 +16,7 @@ use App\vwconsmortmun;//Relatorio 5 - Model
 use App\vwhistoricomortmun;//Relatorio 6 - Model
 use App\vwconsmortest;//Relatorio 7 e 8 - Model
 use App\vwconsanalfmun;//Relatorio 9 e 10 - Model
+use App\vwconsanalfest;//Relatorio 11 e 12 - Model
 
 class selectController extends Controller
 {
@@ -84,11 +88,13 @@ class selectController extends Controller
 			}
 
 			$result = vwconsidhm::where ($where)->get();
-			return view('selectView',['tables'=>$result]);
-		}
 
+		}
+		else {
 		$result = vwconsidhm::all();
-		return view('selectView',['tables'=>$result]);
+		}
+		$graficos = new Graficos();
+		$graficos->graficoLinha($result);
 	}
 
 //Relatorio 3
@@ -325,5 +331,57 @@ class selectController extends Controller
 		}
 		//ALGUM RETURN QUE VAI PRA VIEW
 	}
+
+//Relatorio 11
+	public function searchAnalfEst(Request $request){
+		$where = array();
+		if(request('search') != ','){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_estado','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[1]]);
+			}
+
+			$result =	vwconsanalfest::where ($where)->get();
+
+			foreach($result as $row){
+				echo $row->nome_estado;
+				echo $row->tanalfabetismo_estado;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsanalfest::all();
+
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->tanalfabetismo_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 12
+	public function searchHistoricoAnalfEst(Request $request){
+		$result = vwconsanalfest::where ('nome_estado',request('nomeEstado'))->get();
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+  	foreach($result as $row){
+	  	echo $row->nome_estado;
+			echo $row->tanalfabetismo_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+
 
 }
