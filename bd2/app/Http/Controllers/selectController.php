@@ -475,6 +475,8 @@ class selectController extends Controller
 			echo $row->ano;
 			echo '<br>';
 		}
+
+		//exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv');
 		//return view('selectView',['tables'=>$result]);
 	}
 
@@ -489,6 +491,24 @@ class selectController extends Controller
 			echo '<br>';
 		}
 		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+//Funcao de exportacao para csv
+	public function exportToCSV($array, $nomeColunas, $fileName){
+		if(count($array) == 0) return null;//Retorna erro
+
+		if(isset($_POST["export"])){
+			$output = fopen("php://output","w");
+
+			header('Content-Disposition: filename='.$fileName);
+
+			fputcsv($output,$nomeColunas);
+
+			foreach($array as $row)
+				fputcsv($output,$row);
+
+			fclose($output);
+		}
 	}
 
 }
