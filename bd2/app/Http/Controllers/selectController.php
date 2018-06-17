@@ -17,6 +17,8 @@ use App\vwhistoricomortmun;//Relatorio 6 - Model
 use App\vwconsmortest;//Relatorio 7 e 8 - Model
 use App\vwconsanalfmun;//Relatorio 9 e 10 - Model
 use App\vwconsanalfest;//Relatorio 11 e 12 - Model
+use App\vwconsrendapcapmun;//Relatorio 13 e 14 - Model
+use App\vwconsrendapcapest;//Relatorio 15 e 16 - Model
 
 class selectController extends Controller
 {
@@ -76,7 +78,7 @@ class selectController extends Controller
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['nome_estado','=', $searchFilters[1]]);
+	  		array_push($where,['sigla','=', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){

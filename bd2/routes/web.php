@@ -15,9 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-
 Route::get('/home', function () {
     $results = DB::select('select * from estado');
 
@@ -56,12 +53,12 @@ Route::get('/searchHistoricoAnalfMun/{nomeMunicipio?}','selectController@searchH
 //Relatorio 11
 Route::get('/searchAnalfEst/{search?}','selectController@searchAnalfEst');
 //Relatorio 12
-Route::get('/searchHistoricoAnalEst/{nomeEstado?}','selectController@searchHistoricoAnalfEst');
+Route::get('/searchHistoricoAnalfEst/{nomeEstado?}','selectController@searchHistoricoAnalfEst');
 //Relatorio 13
 Route::get('/searchRendaPCapMun/{search?}','selectController@searchRendaPCapMun');
 //Relatorio 14
 Route::get('/searchHistoricoRendaPCapMun/{nomeMunicipio?}','selectController@searchHistoricoRendaPCapMun');
 //Relatorio 15
-Route::get('/searchRendaPCapEst/{search?}','selectController@searchAnalfEst');
+Route::get('/searchRendaPCapEst/{search?}','selectController@searchRendaPCapEst');
 //Relatorio 16
 Route::get('/searchHistoricoRendaPCapEst/{nomeEstado?}','selectController@searchHistoricoRendaPCapEst');
