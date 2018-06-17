@@ -74,19 +74,19 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['sigla','=', $searchFilters[1]]);
+	  		array_push($where,['sigla','LIKE', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[2]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
 			}
 
 			if($searchFilters[3] != NULL){
-	  		array_push($where,['classificacao','=', $searchFilters[3]]);
+	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[3].'%']);
 			}
 
 			$result = vwconsidhm::where ($where)->get();
@@ -107,15 +107,15 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','=', $searchFilters[0]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[1]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['classificacao','=', $searchFilters[2]]);
+	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[2].'%']);
 			}
 
 			$result = vwconsidh::where ($where)->get();
@@ -179,15 +179,15 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['sigla','=', $searchFilters[1]]);
+	  		array_push($where,['sigla','LIKE', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[2]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
 			}
 
 			$result = vwconsmortmun::where ($where)->get();
@@ -236,11 +236,11 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','LIKE', $searchFilters[0]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[1]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
 			}
 
 			$result = vwconsmortest::where ($where)->get();
@@ -285,15 +285,15 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['nome_estado','=', $searchFilters[1]]);
+	  		array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[2]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
 			}
 
 			$result =	vwconsanalfmun::where ($where)->get();
@@ -341,11 +341,11 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','=', $searchFilters[0]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[1]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
 			}
 
 			$result =	vwconsanalfest::where ($where)->get();
@@ -391,15 +391,15 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-				array_push($where,['sigla','=', $searchFilters[0]]);
+				array_push($where,['sigla','LIKE', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[1]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
 			}
 
 			$result =	vwconsrendapcapmun::where ($where)->get();
@@ -448,11 +448,11 @@ class selectController extends Controller
 			$searchFilters = preg_split('~,~',request('search'));
 
 			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','=', $searchFilters[0]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','=', $searchFilters[1]]);
+	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
 			}
 
 			$result =	vwconsrendapcapest::where ($where)->get();
@@ -468,15 +468,16 @@ class selectController extends Controller
 		}
 
 		$result = vwconsrendapcapest::all();
-
+/*
 		foreach($result as $row){
 			echo $row->nome_estado;
 			echo $row->trendapercapita_estado;
 			echo $row->ano;
 			echo '<br>';
 		}
-
-		//exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv');
+*/
+		$select = new selectController();
+		$select->exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv',array('nome_estado','trendapercapita_estado','ano'));
 		//return view('selectView',['tables'=>$result]);
 	}
 
@@ -493,22 +494,36 @@ class selectController extends Controller
 		//ALGUM RETURN QUE VAI PRA VIEW
 	}
 
+	public function passToArray($row,$attributesArray){
+		$arrayRow = array();
+
+		foreach ($attributesArray as $aux) {
+			//Reconhece acentuacao e coloca o elemento no final do array
+			array_push($arrayRow,utf8_decode($row[$aux]));
+		}
+
+		return $arrayRow;
+	}
+
 //Funcao de exportacao para csv
-	public function exportToCSV($array, $nomeColunas, $fileName){
+	public function exportToCSV($array, $nomeColunas, $fileName, $attributesArray){
 		if(count($array) == 0) return null;//Retorna erro
 
-		if(isset($_POST["export"])){
-			$output = fopen("php://output","w");
+		$select = new selectController();
+		$output = fopen('php://memory','w');
 
-			header('Content-Disposition: filename='.$fileName);
+		fputcsv($output,$nomeColunas,";");
 
-			fputcsv($output,$nomeColunas);
-
-			foreach($array as $row)
-				fputcsv($output,$row);
-
-			fclose($output);
+		foreach($array as $row){
+			fputcsv($output,$select->passToArray($row,$attributesArray),";");
 		}
+
+		fseek($output,0);
+
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename="'.$fileName.'";');
+
+		fpassthru($output);
 	}
 
 }
