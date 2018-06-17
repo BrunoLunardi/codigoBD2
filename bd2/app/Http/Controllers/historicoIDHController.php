@@ -14,14 +14,15 @@ class historicoIDHController extends Controller
 
         $historico->addDateColumn('Year')
            ->addNumberColumn('IDH')
-           ->addRow(array('2010', 100))
-           ->addRow(array('2011', 200))
-           ->addRow(array('2012', 300))
-           ->setDateTimeFormat('y');
+           ->setDateTimeFormat('Y')
+           ->addRow(array("2010", 100))
+           ->addRow(array("2011", 200))
+           ->addRow(array("2012", 300));
 
 
         \Lava::LineChart('historicoIDH', $historico, [
           'title' => 'Historico de IDH'
+
         ]);
         return view('historicoIDHView');
 

@@ -67,14 +67,21 @@ class selectController extends Controller
 		$where = array();
 
 		if(request('search') != ',,,'){
-			$searchFilters = preg_split('~,~',request('search'));
+echo request('search');
+/*
+			$searchFilters = preg_split('~=~',request('search'));
+			$searchFilters[0] = str_replace('nome_municipio=','',$searchFilters[0]);
+			$searchFilters[1] = str_replace('sigla=','',$searchFilters[1]);
+			$searchFilters[2] = str_replace('ano=','',$searchFilters[2]);
+			$searchFilters[3] = str_replace('classificacao=','',$searchFilters[3]);
+
 
 			if($searchFilters[0] != NULL){
 				array_push($where,['nome_municipio','=', $searchFilters[0]]);
 			}
 
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['nome_estado','=', $searchFilters[1]]);
+	  		array_push($where,['sigla','=', $searchFilters[1]]);
 			}
 
 			if($searchFilters[2] != NULL){
@@ -84,16 +91,15 @@ class selectController extends Controller
 			if($searchFilters[3] != NULL){
 	  		array_push($where,['classificacao','=', $searchFilters[3]]);
 			}
-
-			$result = vwconsidhm::where ($where)->get();
+*/
+//			$result = vwconsidhm::where ($where)->get();
 
 		}
 		else {
-		$result = vwconsidhm::all();
+	//	$result = vwconsidhm::all();
 	}
-$graficos = new Graficos();
-$graficos->graficoLinha($result);
 
+	//return view('searchIDHM',['tables'=>$result]);
 	}
 
 //Relatorio 3
@@ -330,5 +336,4 @@ $graficos->graficoLinha($result);
 		}
 		//ALGUM RETURN QUE VAI PRA VIEW
 	}
-
 }
