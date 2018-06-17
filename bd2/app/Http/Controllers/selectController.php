@@ -382,6 +382,111 @@ class selectController extends Controller
 		//ALGUM RETURN QUE VAI PRA VIEW
 	}
 
+//Relatorio 13
+	public function searchRendaPCapMun(Request $request){
+		$where = array();
+		if(request('search') != ',,'){
+			$searchFilters = preg_split('~,~',request('search'));
 
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_municipio','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+				array_push($where,['sigla','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[1]]);
+			}
+
+			$result =	vwconsrendapcapmun::where ($where)->get();
+
+			foreach($result as $row){
+ 				echo $row->nome_municipio;
+				echo $row->sigla;
+				echo $row->trendapercapita_municipio;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsrendapcapmun::all();
+
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->sigla;
+			echo $row->trendapercapita_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 14
+	public function searchHistoricoRendaPCapMun(Request $request){
+		$result = vwconsrendapcapmun::where ('nome_municipio',request('nomeMunicipio'))->get();
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+		foreach($result as $row){
+			echo $row->nome_municipio;
+			echo $row->sigla;
+			echo $row->trendapercapita_municipio;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
+
+//Relatorio 15
+	public function searchRendaPCapEst(Request $request){
+		$where = array();
+		if(request('search') != ','){
+			$searchFilters = preg_split('~,~',request('search'));
+
+			if($searchFilters[0] != NULL){
+				array_push($where,['nome_estado','=', $searchFilters[0]]);
+			}
+
+			if($searchFilters[1] != NULL){
+	  		array_push($where,['ano','=', $searchFilters[1]]);
+			}
+
+			$result =	vwconsrendapcapest::where ($where)->get();
+
+			foreach($result as $row){
+ 				echo $row->nome_estado;
+				echo $row->trendapercapita_estado;
+				echo $row->ano;
+				echo '<br>';
+			}
+			return;
+			//return view('selectView',['tables'=>$result]);
+		}
+
+		$result = vwconsrendapcapest::all();
+
+		foreach($result as $row){
+			echo $row->nome_estado;
+			echo $row->trendapercapita_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//return view('selectView',['tables'=>$result]);
+	}
+
+//Relatorio 16
+	public function searchHistoricoRendaPCapEst(Request $request){
+		$result = vwconsrendapcapest::where ('nome_estado',request('nomeEstado'))->get();
+		//FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+  	foreach($result as $row){
+	  	echo $row->nome_estado;
+			echo $row->trendapercapita_estado;
+			echo $row->ano;
+			echo '<br>';
+		}
+		//ALGUM RETURN QUE VAI PRA VIEW
+	}
 
 }

@@ -57,3 +57,11 @@ Route::get('/searchHistoricoAnalfMun/{nomeMunicipio?}','selectController@searchH
 Route::get('/searchAnalfEst/{search?}','selectController@searchAnalfEst');
 //Relatorio 12
 Route::get('/searchHistoricoAnalEst/{nomeEstado?}','selectController@searchHistoricoAnalfEst');
+//Relatorio 13
+Route::get('/searchRendaPCapMun/{search?}','selectController@searchRendaPCapMun');
+//Relatorio 14
+Route::get('/searchHistoricoRendaPCapMun/{nomeMunicipio?}','selectController@searchHistoricoRendaPCapMun');
+//Relatorio 15
+Route::get('/searchRendaPCapEst/{search?}','selectController@searchAnalfEst');
+//Relatorio 16
+Route::get('/searchHistoricoRendaPCapEst/{nomeEstado?}','selectController@searchHistoricoRendaPCapEst');
