@@ -31,23 +31,23 @@ Route::get('/teste/{auxiliar?}','selectController@teste');
 Route::get('/showTable/{tName?}','selectController@index');
 
 //Relatorio 1
-Route::get('/searchIDHM/{search?}','selectController@searchIDHM')->name('selectRoute');
+Route::any('/searchIDHM/','selectController@searchIDHM');
 //Relatorio 2
-Route::get('/searchHistoricoIDHM/{nomeMunicipio?}','selectController@searchHistoricoIDHM');
+Route::any('/historicoIDHM/','selectController@searchHistoricoIDHM');
 //Relatorio 3
-Route::get('/searchIDH/{search?}','selectController@searchIDH')->name('selectRoute');
+Route::any('/searchIDH/','selectController@searchIDH');
 //Relatorio 4
 Route::get('/searchHistoricoIDH/{nomeEstado?}','selectController@searchHistoricoIDH');
 //Relatorio 5
-Route::get('/searchMortMun/{search?}','selectController@searchMortMun');
+Route::any('/searchMortMun/','selectController@searchMortMun');
 //Relatorio 6
 Route::get('/searchHistoricoMortMun/{nomeMunicipio?}','selectController@searchHistoricoMortMun');
 //Relatorio 7
-Route::get('/searchMortEst/{search?}','selectController@searchMortEst');
+Route::any('/searchMortEst/','selectController@searchMortEst');
 //Relatorio 8
 Route::get('/searchHistoricoMortEst/{nomeEstado?}','selectController@searchHistoricoMortEst');
 //Relatorio 9
-Route::get('/searchAnalfMun/{search?}','selectController@searchAnalfMun');
+Route::any('/searchAnalfMun/','selectController@searchAnalfMun');
 //Relatorio 10
 Route::get('/searchHistoricoAnalfMun/{nomeMunicipio?}','selectController@searchHistoricoAnalfMun');
 //Relatorio 11
