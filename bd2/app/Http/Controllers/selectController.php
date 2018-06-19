@@ -119,7 +119,7 @@ class selectController extends Controller
 
         $titulo = 'Titulo';
         if ($nomeMun!='null') {
-            $titulo = 'Histórico de IDH em '.$nomeMun;
+            $titulo = 'Histórico de IDHM em '.$nomeMun;
         } else {
             $titulo = '-1';
         }
@@ -164,17 +164,32 @@ class selectController extends Controller
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
     {
-        $result = vwhistoricoidh::where('nome_estado', request('nomeEstado'))->get();
+        $result = vwhistoricoidh::where('nome_estado', $request->input('nomeEstado'))->get();
 
-        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->idh;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
-    }
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->tidh));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de IDH em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoIDHView', ['tables'=>$result,'titulo'=>$titulo]);}
 
     //Relatorio 5 PRONTO
     public function searchMortMun(Request $request)
@@ -202,7 +217,7 @@ class selectController extends Controller
             array_push($where, ['ano','=', $searchFilters[2]]);
         }
 
-$result = vwconsmortmun::where($where)->get();
+        $result = vwconsmortmun::where($where)->get();
         //$result = vwconsmortmun::where($where)->orderBy($searchFilters[0])->get();
 
 
@@ -212,17 +227,32 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 6
     public function searchHistoricoMortMun(Request $request)
     {
-        $result = vwhistoricomortmun::where('nome_municipio', request('nomeMunicipio'))->get();
+        $result = vwhistoricomortmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
 
-        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_municipio;
-            echo $row->tmortalidade_municipio;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
-    }
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->tmortalidade_municipio));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de Mortalidade em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoMortMun', ['tables'=>$result,'titulo'=>$titulo]);}
 
     //Relatorio 7 PRONTO
     public function searchMortEst(Request $request)
@@ -243,8 +273,8 @@ $result = vwconsmortmun::where($where)->get();
             array_push($where, ['ano','=', $searchFilters[1]]);
         }
 
-    //    $result = vwconsmortest::where($where)->orderBy($searchFilters[0])->get();
- $result = vwconsmortest::where($where)->get();
+        //    $result = vwconsmortest::where($where)->orderBy($searchFilters[0])->get();
+        $result = vwconsmortest::where($where)->get();
 
 
         return view('searchMortEst', ['tables'=>$result]);
@@ -263,16 +293,32 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 8
     public function searchHistoricoMortEst(Request $request)
     {
-        $result = vwconsanalfmun::where('nome_estado', request('nomeEstado'))->get();
-        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->tmortalidade_estado;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
-    }
+        $result = vwconsanalfmun::where('nome_estado', $request->input('nomeEstado'))->get();
+
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->tmortalidade_estado));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de Mortalidade em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoMortEst', ['tables'=>$result,'titulo'=>$titulo]);}
 
     //Relatorio 9 PRONTO
     public function searchAnalfMun(Request $request)
@@ -308,16 +354,33 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 10
     public function searchHistoricoAnalfMun(Request $request)
     {
-        $result = vwconsanalfmun::where('nome_municipio', request('nomeMunicipio'))->get();
+        $result = vwconsanalfmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_municipio;
-            echo $row->tanalfabetismo_municipio;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
-    }
+
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->searchHistoricoAnalfMun));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoAnalfMun', ['tables'=>$result,'titulo'=>$titulo]);}
 
     //Relatorio 11 PRONTO
     public function searchAnalfEst(Request $request)
@@ -336,7 +399,7 @@ $result = vwconsmortmun::where($where)->get();
             array_push($where, ['ano','=', $searchFilters[2]]);
         }
 
-    //    $result =	vwconsanalfest::where($where)->orderBy($searchFilters[0])->get();
+        //    $result =	vwconsanalfest::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsanalfest::where($where)->get();
         return view('searchAnalfEst', ['tables'=>$result]);
     }
@@ -344,15 +407,33 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 12
     public function searchHistoricoAnalfEst(Request $request)
     {
-        $result = vwconsanalfest::where('nome_estado', request('nomeEstado'))->get();
+        $result = vwconsanalfest::where('nome_estado', $request->input('nomeEstado'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->tanalfabetismo_estado;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
+
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->tanalfabetismo_estado));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoAnalfEst', ['tables'=>$result,'titulo'=>$titulo]);
     }
 
     //Relatorio 13
@@ -379,7 +460,7 @@ $result = vwconsmortmun::where($where)->get();
             array_push($where, ['ano','=', $searchFilters[2]]);
         }
 
-    //    $result =	vwconsrendapcapmun::where($where)->orderBy($searchFilters[0])->get();
+        //    $result =	vwconsrendapcapmun::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsrendapcapmun::where($where)->get();
         return view('searchRendaPCapMun', ['tables'=>$result]);
     }
@@ -387,16 +468,33 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 14
     public function searchHistoricoRendaPCapMun(Request $request)
     {
-        $result = vwconsrendapcapmun::where('nome_municipio', request('nomeMunicipio'))->get();
+        $result = vwconsrendapcapmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_municipio;
-            echo $row->sigla;
-            echo $row->trendapercapita_municipio;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
+
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->trendapercapita_municipio));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de Renda em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoRendaMun', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
     }
 
     //Relatorio 15
@@ -428,14 +526,31 @@ $result = vwconsmortmun::where($where)->get();
     //Relatorio 16
     public function searchHistoricoRendaPCapEst(Request $request)
     {
-        $result = vwconsrendapcapest::where('nome_estado', request('nomeEstado'))->get();
-        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->trendapercapita_estado;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //ALGUM RETURN QUE VAI PRA VIEW
+        $result = vwconsrendapcapest::where('nome_estado', $request->input('nomeEstado'))->get();
+
+                $historico = \Lava::DataTable();
+                $historico->addDateColumn('Ano')
+                        ->addNumberColumn('IDH')
+                        ->setDateTimeFormat('Y');
+                $nomeMun = 'null';
+                foreach ($result as $row) {
+                    $historico->addRow(array(
+                                strval($row->ano),$row->trendapercapita_estado));
+                    $nomeMun = $row->nome_municipio;
+                }
+
+                $titulo = 'Titulo';
+                if ($nomeMun!='null') {
+                    $titulo = 'Histórico de IDHM em '.$nomeMun;
+                } else {
+                    $titulo = '-1';
+                }
+                \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+                return view('historicoRendaEst', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
     }
 }

@@ -34,12 +34,19 @@
   <div class="panel-body animatedLong fadeInDown">
     <table>
       <tr>
-        <td style="padding: 8px;"><a href="{{'index.php/geoRelatorio'}}" class="btn btn-success" style="width: 200px;">Geo Relatório</a></td>
-        <td><a href="{{'index.php/historicoIDHM/'}}" class="btn btn-success" style="width: 200px;">historico IDHM</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoIDH/'}}" class="btn btn-success" style="width: 200px;">Historico IDH</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoIDHM/'}}" class="btn btn-success" style="width: 200px;">Historico IDHM</a></td>
       </tr>
       <tr>
-        <td><a href="" class="btn btn-success" style="width: 200px;">Relatório 3</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfEst/'}}" class="btn btn-success" style="width: 200px;">Historico Anafalbetismo Estadual</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfMun/'}}" class="btn btn-success" style="width: 200px;">Historico Anafalbetismo Municipal</a></td>
       </tr>
+      <tr>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoRendaEst/'}}" class="btn btn-success" style="width: 200px;">Historico Renda Estadual</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoRendaMun/'}}" class="btn btn-success" style="width: 200px;">Historico Renda Municipal</a></td>
+      </tr>
+
+
     </table>
 </div>
 </div>
