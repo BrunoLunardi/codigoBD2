@@ -62,12 +62,8 @@ class selectController extends Controller
         }
     }
 
-    //Relatorio 1
-    public function searchIDHMAll(Request $request)
-    {
-        $result = vwconsidhm::all();
-        return view('searchIDHM', ['tables'=>$result]);
-    }
+    //Relatorio 1 PRONTO
+
     public function searchIDHM(Request $request)
     {
         $where = array();
@@ -97,14 +93,50 @@ class selectController extends Controller
 
         return view('searchIDHM', ['tables'=>$result]);
     }
+    //Relatorio 2 PRONTO
+    public function searchHistoricoIDHM(Request $request)
+    {
+        $result = vwhistoricoidhm::where('nome_municipio', $request->input('nome_municipio'))->get(); // rever
 
-    //Relatorio 3
+
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
+                ->addNumberColumn('IDH')
+                ->setDateTimeFormat('Y');
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
+                        strval($row->ano),$row->tidhm));
+            $nomeMun = $row->nome_municipio;
+        }
+
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de IDH em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
+
+                                        'height' => '300'
+
+                ]);
+
+        return view('historicoIDHMView', ['tables'=>$result,'titulo'=>$titulo]);
+    }
+
+    //Relatorio 3 PRONTO
     public function searchIDH(Request $request)
     {
         $where = array();
 
-        if (request('search') != ',,') {
-            $searchFilters = preg_split('~,~', request('search'));
+
+				$searchFilters = array(
+								$request->input('nome_estado'),
+								$request->input('ano'),
+								$request->input('classificacao'),
+						);
+
 
             if ($searchFilters[0] != null) {
                 array_push($where, ['nome_estado','=', $searchFilters[0]]);
@@ -120,55 +152,8 @@ class selectController extends Controller
 
             $result = vwconsidh::where($where)->get();
 
-            foreach ($result as $row) {
-                echo $row->nome_estado;
-                echo $row->idh;
-                echo $row->ano;
-                echo $row->classificacao;
-                echo '<br>';
-            }
-
-            return;
-            //return view('selectView',['tables'=>$result]);
-        }
-
-        $result = vwconsidh::all();
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->idh;
-            echo $row->ano;
-            echo $row->classificacao;
-            echo '<br>';
-        }
-        //return view('selectView',['tables'=>$result]);
+        return view('searchIDH',['tables'=>$result]);
     }
-
-    //Relatorio 2
-    public function searchHistoricoIDHM(Request $request)
-    {
-        $result = vwhistoricoidhm::where('nome_municipio', $request->input('nome_municipio'))->get(); // rever
-
-
-				$historico = \Lava::DataTable();
-        $historico->addDateColumn('Ano')
-                ->addNumberColumn('IDH')
-                ->setDateTimeFormat('Y');
-$nomeMun = 'null';
-        foreach ($result as $row) {
-            $historico->addRow(array(
-                        strval($row->ano),$row->tidhm));
-												$nomeMun = $row->nome_municipio;
-        }
-
-        \Lava::LineChart('historicoIDHM', $historico, [
-                    'title' => 'Historico de IDHM de '.$nomeMun,
-										'height' => '300'
-
-                ]);
-
-        return view('historicoIDHMView',['tables'=>$result]);
-    }
-
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
     {
@@ -184,13 +169,19 @@ $nomeMun = 'null';
         //ALGUM RETURN QUE VAI PRA VIEW
     }
 
-    //Relatorio 5
+    //Relatorio 5 PRONTO
     public function searchMortMun(Request $request)
     {
         $where = array();
 
-        if (request('search') != ',,') {
-            $searchFilters = preg_split('~,~', request('search'));
+
+				$searchFilters = array(
+								$request->input('nome_municipio'),
+								$request->input('sigla'),
+								$request->input('ano'),
+
+						);
+
 
             if ($searchFilters[0] != null) {
                 array_push($where, ['nome_municipio','=', $searchFilters[0]]);
@@ -206,26 +197,8 @@ $nomeMun = 'null';
 
             $result = vwconsmortmun::where($where)->get();
 
-            foreach ($result as $row) {
-                echo $row->nome_municipio;
-                echo $row->sigla;
-                echo $row->tmortalidade_municipio;
-                echo $row->ano;
-                echo '<br>';
-            }
-            return;
-            //return view('selectView',['tables'=>$result]);
-        }
 
-        $result = vwconsmortmun::all();
-        foreach ($result as $row) {
-            echo $row->nome_municipio;
-            echo $row->sigla;
-            echo $row->tmortalidade_municipio;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //return view('selectView',['tables'=>$result]);
+            return view('searchMortMun',['tables'=>$result]);
     }
 
     //Relatorio 6
@@ -243,13 +216,19 @@ $nomeMun = 'null';
         //ALGUM RETURN QUE VAI PRA VIEW
     }
 
-    //Relatorio 7
+    //Relatorio 7 PRONTO
     public function searchMortEst(Request $request)
     {
         $where = array();
 
-        if (request('search') != ',') {
-            $searchFilters = preg_split('~,~', request('search'));
+
+
+								$searchFilters = array(
+												$request->input('nome_estado'),
+												$request->input('ano'),
+										);
+
+
 
             if ($searchFilters[0] != null) {
                 array_push($where, ['nome_estado','LIKE', $searchFilters[0]]);
@@ -261,15 +240,10 @@ $nomeMun = 'null';
 
             $result = vwconsmortest::where($where)->get();
 
-            foreach ($result as $row) {
-                echo $row->nome_estado;
-                echo $row->tmortalidade_estado;
-                echo $row->ano;
-                echo '<br>';
-            }
-            return;
-            //return view('selectView',['tables'=>$result]);
-        }
+
+
+          return view('searchMortEst',['tables'=>$result]);
+
 
         $result = vwconsmortest::all();
         foreach ($result as $row) {
@@ -299,15 +273,21 @@ $nomeMun = 'null';
     public function searchAnalfMun(Request $request)
     {
         $where = array();
-        if (request('search') != ',,') {
-            $searchFilters = preg_split('~,~', request('search'));
+
+
+								$searchFilters = array(
+												$request->input('nome_municipio'),
+												$request->input('sigla'),
+												$request->input('ano'),
+
+										);
 
             if ($searchFilters[0] != null) {
                 array_push($where, ['nome_municipio','=', $searchFilters[0]]);
-            }
+	            }
 
             if ($searchFilters[1] != null) {
-                array_push($where, ['nome_estado','=', $searchFilters[1]]);
+                array_push($where, ['sigla','=', $searchFilters[1]]);
             }
 
             if ($searchFilters[2] != null) {
@@ -316,27 +296,7 @@ $nomeMun = 'null';
 
             $result =	vwconsanalfmun::where($where)->get();
 
-            foreach ($result as $row) {
-                echo $row->nome_municipio;
-                echo $row->sigla;
-                echo $row->tanalfabetismo_municipio;
-                echo $row->ano;
-                echo '<br>';
-            }
-            return;
-            //return view('selectView',['tables'=>$result]);
-        }
-
-        $result = vwconsanalfmun::all();
-
-        foreach ($result as $row) {
-            echo $row->nome_municipio;
-            echo $row->sigla;
-            echo $row->tanalfabetismo_municipio;
-            echo $row->ano;
-            echo '<br>';
-        }
-        //return view('selectView',['tables'=>$result]);
+        return view('searchAnalfMun',['tables'=>$result]);
     }
 
     //Relatorio 10

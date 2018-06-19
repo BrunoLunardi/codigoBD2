@@ -8,7 +8,7 @@ class vwconsidh extends Model
 {
   protected $fillable = [
         'nome_estado',
-        'idh',
+        'tidh',
         'ano',
         'classificacao',
   ];

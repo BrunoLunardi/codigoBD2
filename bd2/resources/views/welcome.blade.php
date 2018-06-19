@@ -1,6 +1,6 @@
 @extends('layouts.app') @section('content')
 <div class="container">
-  <div class="panel-group" style="text-align: center; margin-left: 250px;">
+  <div class="panel-group" style="text-align: center; margin-left: 125px;">
     <table>
       <tr>
         <td style="padding: 8px;">
@@ -10,7 +10,13 @@
                 <h3>Banco de Dados</div>
   <div class="panel-body animatedLong fadeInDown" style="text-align: center;">
       <tr>
-  <td style="padding: 8px;"> <a href="{{'index.php/searchIDHM/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar IDHM</a> </td>
+  <td style="padding: 8px;"> <a href="{{'index.php/searchIDH/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar IDH</a> </td>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchIDHM/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar IDHM</a> </td>
+    <tr>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchMortMun/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Mortalidade Município</a> </td>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchMortEst/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Mortalidade Estadual</a> </td>
+    <tr>
+      <td style="padding: 8px;"> <a href="{{'index.php/searchAnalfMun/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Anafalbetismo Municipal</a> </td>
 
   </table>
 </div>
