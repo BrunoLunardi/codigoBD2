@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
+use App\Util;
+
 use App\Http\Controllers\Graficos; // Controlador dos graficos
 
 //Modelos
@@ -70,26 +72,28 @@ class selectController extends Controller
 	public function searchIDHM(Request $request){
 		$where = array();
 
-		if(request('search') != ',,,'){
+		if(request('search') != ',,,,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['sigla','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+	  		array_push($where,['sigla','LIKE', $searchFilters[2]]);
 			}
 
 			if($searchFilters[3] != NULL){
-	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[3].'%']);
+	  		array_push($where,['ano','LIKE', $searchFilters[3]]);
 			}
 
-			$result = vwconsidhm::where ($where)->get();
+			if($searchFilters[4] != NULL){
+	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[4].'%']);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsidhm::where ($where)->get();
+			else $result =	vwconsidhm::where ($where)->orderBy($searchFilters[0])->get();
 
 		}
 		else {
@@ -103,22 +107,24 @@ class selectController extends Controller
 	public function searchIDH(Request $request){
 		$where = array();
 
-		if(request('search') != ',,'){
+		if(request('search') != ',,,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[2].'%']);
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
 			}
 
-			$result = vwconsidh::where ($where)->get();
+			if($searchFilters[3] != NULL){
+	  		array_push($where,['classificacao','LIKE', '%'.$searchFilters[3].'%']);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsidh::where ($where)->get();
+			else $result = vwconsidh::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
 				echo $row->nome_estado;
@@ -175,22 +181,24 @@ class selectController extends Controller
 	public function searchMortMun(Request $request){
 		$where = array();
 
-		if(request('search') != ',,'){
+		if(request('search') != ',,,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['sigla','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+	  		array_push($where,['sigla','LIKE', $searchFilters[2]]);
 			}
 
-			$result = vwconsmortmun::where ($where)->get();
+			if($searchFilters[3] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[3]]);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsmortmun::where ($where)->get();
+			else $result =	vwconsmortmun::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
 				echo $row->nome_municipio;
@@ -232,18 +240,20 @@ class selectController extends Controller
 	public function searchMortEst(Request $request){
 		$where = array();
 
-		if(request('search') != ','){
+		if(request('search') != ',,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
-			$result = vwconsmortest::where ($where)->get();
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsmortest::where ($where)->get();
+			else $result =	vwconsmortest::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
 				echo $row->nome_estado;
@@ -281,22 +291,24 @@ class selectController extends Controller
 //Relatorio 9
 	public function searchAnalfMun(Request $request){
 		$where = array();
-		if(request('search') != ',,'){
+		if(request('search') != ',,,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+	  		array_push($where,['nome_estado','LIKE', '%'.$searchFilters[2].'%']);
 			}
 
-			$result =	vwconsanalfmun::where ($where)->get();
+			if($searchFilters[3] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[3]]);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsanalfmun::where ($where)->get();
+			else $result =	vwconsanalfmun::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
 				echo $row->nome_municipio;
@@ -337,18 +349,20 @@ class selectController extends Controller
 //Relatorio 11
 	public function searchAnalfEst(Request $request){
 		$where = array();
-		if(request('search') != ','){
+		if(request('search') != ',,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
-			$result =	vwconsanalfest::where ($where)->get();
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsanalfest::where ($where)->get();
+			else $result =	vwconsanalfest::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
 				echo $row->nome_estado;
@@ -387,22 +401,24 @@ class selectController extends Controller
 //Relatorio 13
 	public function searchRendaPCapMun(Request $request){
 		$where = array();
-		if(request('search') != ',,'){
+		if(request('search') != ',,,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-				array_push($where,['sigla','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_municipio','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
 			if($searchFilters[2] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+				array_push($where,['sigla','LIKE', $searchFilters[2]]);
 			}
 
-			$result =	vwconsrendapcapmun::where ($where)->get();
+			if($searchFilters[3] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[3]]);
+			}
+
+			if($searchFilters[0] == '-')
+				$result =	vwconsrendapcapmun::where ($where)->get();
+			else $result =	vwconsrendapcapmun::where ($where)->orderBy($searchFilters[0])->get();
 
 			foreach($result as $row){
  				echo $row->nome_municipio;
@@ -444,40 +460,46 @@ class selectController extends Controller
 //Relatorio 15
 	public function searchRendaPCapEst(Request $request){
 		$where = array();
-		if(request('search') != ','){
+		if(request('search') != ',,'){
 			$searchFilters = preg_split('~,~',request('search'));
 
-			if($searchFilters[0] != NULL){
-				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
-			}
-
 			if($searchFilters[1] != NULL){
-	  		array_push($where,['ano','LIKE', $searchFilters[1]]);
+				array_push($where,['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
 			}
 
-			$result =	vwconsrendapcapest::where ($where)->get();
+			if($searchFilters[2] != NULL){
+	  		array_push($where,['ano','LIKE', $searchFilters[2]]);
+			}
 
+			if($searchFilters[0] == '-')
+				$result =	vwconsrendapcapest::where ($where)->get();
+			else $result =	vwconsrendapcapest::where ($where)->orderBy($searchFilters[0])->get();
+/*
 			foreach($result as $row){
  				echo $row->nome_estado;
 				echo $row->trendapercapita_estado;
 				echo $row->ano;
 				echo '<br>';
-			}
+			}*/
+			$util = new Util();
+			$util->exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv',array('nome_estado','trendapercapita_estado','ano'));
+
 			return;
 			//return view('selectView',['tables'=>$result]);
 		}
 
 		$result = vwconsrendapcapest::all();
-/*
+
+		/*
 		foreach($result as $row){
 			echo $row->nome_estado;
 			echo $row->trendapercapita_estado;
 			echo $row->ano;
 			echo '<br>';
-		}
-*/
-		$select = new selectController();
-		$select->exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv',array('nome_estado','trendapercapita_estado','ano'));
+		}*/
+
+		$util = new Util();
+		$util->exportToCSV($result,array('Estado','Renda Per Capita','Ano'),'RendaPerCapitaEstadual.csv',array('nome_estado','trendapercapita_estado','ano'));
 		//return view('selectView',['tables'=>$result]);
 	}
 
@@ -492,38 +514,6 @@ class selectController extends Controller
 			echo '<br>';
 		}
 		//ALGUM RETURN QUE VAI PRA VIEW
-	}
-
-	public function passToArray($row,$attributesArray){
-		$arrayRow = array();
-
-		foreach ($attributesArray as $aux) {
-			//Reconhece acentuacao e coloca o elemento no final do array
-			array_push($arrayRow,utf8_decode($row[$aux]));
-		}
-
-		return $arrayRow;
-	}
-
-//Funcao de exportacao para csv
-	public function exportToCSV($array, $nomeColunas, $fileName, $attributesArray){
-		if(count($array) == 0) return null;//Retorna erro
-
-		$select = new selectController();
-		$output = fopen('php://memory','w');
-
-		fputcsv($output,$nomeColunas,";");
-
-		foreach($array as $row){
-			fputcsv($output,$select->passToArray($row,$attributesArray),";");
-		}
-
-		fseek($output,0);
-
-		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename="'.$fileName.'";');
-
-		fpassthru($output);
 	}
 
 }
