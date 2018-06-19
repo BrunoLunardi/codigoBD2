@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use DB;
 
 
+use App\Util;
+
+use App\Http\Controllers\Graficos; // Controlador dos graficos
+
 use Khill\Lavacharts\Lavacharts;
 use App\vwconsidhm;//Relatorio 1 - Model
 use App\vwhistoricoidhm;//Relatorio 2 - Model
@@ -78,11 +82,11 @@ class selectController extends Controller
             );
 
         if ($searchFilters[0] != null) {
-            array_push($where, ['nome_municipio','=', $searchFilters[0]]);
+            array_push($where, ['nome_municipio','LIKE', $searchFilters[0]]);
         }
 
         if ($searchFilters[1] != null) {
-            array_push($where, ['sigla','=', $searchFilters[1]]);
+            array_push($where, ['sigla','LIKE', $searchFilters[1]]);
         }
 
         if ($searchFilters[2] != null) {
@@ -90,9 +94,9 @@ class selectController extends Controller
         }
 
         if ($searchFilters[3] != null) {
-            array_push($where, ['classificacao','=', $searchFilters[3]]);
+            array_push($where, ['classificacao','LIKE', $searchFilters[3]]);
         }
-        $result = vwconsidhm::where($where)->get();
+        $result =	vwconsidhm::where($where)->orderBy($searchFilters[0])->get();
 
         return view('searchIDHM', ['tables'=>$result]);
     }
@@ -134,28 +138,28 @@ class selectController extends Controller
         $where = array();
 
 
-				$searchFilters = array(
-								$request->input('nome_estado'),
-								$request->input('ano'),
-								$request->input('classificacao'),
-						);
+        $searchFilters = array(
+                                $request->input('nome_estado'),
+                                $request->input('ano'),
+                                $request->input('classificacao'),
+                        );
 
 
-            if ($searchFilters[0] != null) {
-                array_push($where, ['nome_estado','=', $searchFilters[0]]);
-            }
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_estado','=', $searchFilters[0]]);
+        }
 
-            if ($searchFilters[1] != null) {
-                array_push($where, ['ano','=', $searchFilters[1]]);
-            }
+        if ($searchFilters[1] != null) {
+            array_push($where, ['ano','=', $searchFilters[1]]);
+        }
 
-            if ($searchFilters[2] != null) {
-                array_push($where, ['classificacao','=', $searchFilters[2]]);
-            }
+        if ($searchFilters[2] != null) {
+            array_push($where, ['classificacao','=', $searchFilters[2]]);
+        }
 
-            $result = vwconsidh::where($where)->get();
+        $result = vwconsidh::where($where)->get();
 
-        return view('searchIDH',['tables'=>$result]);
+        return view('searchIDH', ['tables'=>$result]);
     }
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
@@ -178,30 +182,31 @@ class selectController extends Controller
         $where = array();
 
 
-				$searchFilters = array(
-								$request->input('nome_municipio'),
-								$request->input('sigla'),
-								$request->input('ano'),
+        $searchFilters = array(
+                                $request->input('nome_municipio'),
+                                $request->input('sigla'),
+                                $request->input('ano'),
 
-						);
-
-
-            if ($searchFilters[0] != null) {
-                array_push($where, ['nome_municipio','=', $searchFilters[0]]);
-            }
-
-            if ($searchFilters[1] != null) {
-                array_push($where, ['sigla','=', $searchFilters[1]]);
-            }
-
-            if ($searchFilters[2] != null) {
-                array_push($where, ['ano','=', $searchFilters[2]]);
-            }
-
-            $result = vwconsmortmun::where($where)->get();
+                        );
 
 
-            return view('searchMortMun',['tables'=>$result]);
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_municipio','=', $searchFilters[0]]);
+        }
+
+        if ($searchFilters[1] != null) {
+            array_push($where, ['sigla','=', $searchFilters[1]]);
+        }
+
+        if ($searchFilters[2] != null) {
+            array_push($where, ['ano','=', $searchFilters[2]]);
+        }
+
+$result = vwconsmortmun::where($where)->get();
+        //$result = vwconsmortmun::where($where)->orderBy($searchFilters[0])->get();
+
+
+        return view('searchMortMun', ['tables'=>$result]);
     }
 
     //Relatorio 6
@@ -224,28 +229,25 @@ class selectController extends Controller
     {
         $where = array();
 
-
-
-								$searchFilters = array(
-												$request->input('nome_estado'),
-												$request->input('ano'),
-										);
+        $searchFilters = array(   $request->input('nome_estado'),
+                                                $request->input('ano'),
+                                        );
 
 
 
-            if ($searchFilters[0] != null) {
-                array_push($where, ['nome_estado','LIKE', $searchFilters[0]]);
-            }
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_estado','LIKE', $searchFilters[0]]);
+        }
 
-            if ($searchFilters[1] != null) {
-                array_push($where, ['ano','=', $searchFilters[1]]);
-            }
+        if ($searchFilters[1] != null) {
+            array_push($where, ['ano','=', $searchFilters[1]]);
+        }
 
-            $result = vwconsmortest::where($where)->get();
+    //    $result = vwconsmortest::where($where)->orderBy($searchFilters[0])->get();
+ $result = vwconsmortest::where($where)->get();
 
 
-
-          return view('searchMortEst',['tables'=>$result]);
+        return view('searchMortEst', ['tables'=>$result]);
 
 
         $result = vwconsmortest::all();
@@ -272,34 +274,35 @@ class selectController extends Controller
         //ALGUM RETURN QUE VAI PRA VIEW
     }
 
-    //Relatorio 9
+    //Relatorio 9 PRONTO
     public function searchAnalfMun(Request $request)
     {
         $where = array();
 
 
-								$searchFilters = array(
-												$request->input('nome_municipio'),
-												$request->input('sigla'),
-												$request->input('ano'),
+        $searchFilters = array(
+                                                $request->input('nome_municipio'),
+                                                  $request->input('sigla'),
+                                                $request->input('ano'),
 
-										);
+                                        );
 
-            if ($searchFilters[0] != null) {
-                array_push($where, ['nome_municipio','=', $searchFilters[0]]);
-	            }
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_municipio','=', $searchFilters[0]]);
+        }
 
-            if ($searchFilters[1] != null) {
-                array_push($where, ['sigla','=', $searchFilters[1]]);
-            }
+        if ($searchFilters[1] != null) {
+            array_push($where, ['sigla','=', $searchFilters[1]]);
+        }
 
-            if ($searchFilters[2] != null) {
-                array_push($where, ['ano','=', $searchFilters[2]]);
-            }
+        if ($searchFilters[2] != null) {
+            array_push($where, ['ano','=', $searchFilters[2]]);
+        }
 
-            $result =	vwconsanalfmun::where($where)->get();
+        //$result =	vwconsanalfmun::where($where)->orderBy($searchFilters[0])->get();
+        $result =	vwconsanalfmun::where($where)->get();
 
-        return view('searchAnalfMun',['tables'=>$result]);
+        return view('searchAnalfMun', ['tables'=>$result]);
     }
 
     //Relatorio 10
@@ -310,6 +313,126 @@ class selectController extends Controller
         foreach ($result as $row) {
             echo $row->nome_municipio;
             echo $row->tanalfabetismo_municipio;
+            echo $row->ano;
+            echo '<br>';
+        }
+        //ALGUM RETURN QUE VAI PRA VIEW
+    }
+
+    //Relatorio 11 PRONTO
+    public function searchAnalfEst(Request $request)
+    {
+        $where = array();
+        $searchFilters = array(
+                                                        $request->input('nome_estado'),
+                                                        $request->input('ano'),
+                                                );
+
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_estado','LIKE', '%'.$searchFilters[1].'%']);
+        }
+
+        if ($searchFilters[1] != null) {
+            array_push($where, ['ano','=', $searchFilters[2]]);
+        }
+
+    //    $result =	vwconsanalfest::where($where)->orderBy($searchFilters[0])->get();
+        $result =	vwconsanalfest::where($where)->get();
+        return view('searchAnalfEst', ['tables'=>$result]);
+    }
+
+    //Relatorio 12
+    public function searchHistoricoAnalfEst(Request $request)
+    {
+        $result = vwconsanalfest::where('nome_estado', request('nomeEstado'))->get();
+        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+        foreach ($result as $row) {
+            echo $row->nome_estado;
+            echo $row->tanalfabetismo_estado;
+            echo $row->ano;
+            echo '<br>';
+        }
+        //ALGUM RETURN QUE VAI PRA VIEW
+    }
+
+    //Relatorio 13
+    public function searchRendaPCapMun(Request $request)
+    {
+        $where = array();
+
+        $searchFilters = array(
+                                                        $request->input('nome_municipio'),
+                                                        $request->input('sigla'),
+                                                        $request->input('ano'),
+
+                                                );
+
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
+        }
+
+        if ($searchFilters[1] != null) {
+            array_push($where, ['sigla','LIKE', $searchFilters[1]]);
+        }
+
+        if ($searchFilters[2] != null) {
+            array_push($where, ['ano','=', $searchFilters[2]]);
+        }
+
+    //    $result =	vwconsrendapcapmun::where($where)->orderBy($searchFilters[0])->get();
+        $result =	vwconsrendapcapmun::where($where)->get();
+        return view('searchRendaPCapMun', ['tables'=>$result]);
+    }
+
+    //Relatorio 14
+    public function searchHistoricoRendaPCapMun(Request $request)
+    {
+        $result = vwconsrendapcapmun::where('nome_municipio', request('nomeMunicipio'))->get();
+        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+        foreach ($result as $row) {
+            echo $row->nome_municipio;
+            echo $row->sigla;
+            echo $row->trendapercapita_municipio;
+            echo $row->ano;
+            echo '<br>';
+        }
+        //ALGUM RETURN QUE VAI PRA VIEW
+    }
+
+    //Relatorio 15
+    public function searchRendaPCapEst(Request $request)
+    {
+        $where = array();
+
+        $searchFilters = array(
+                        $request->input('nome_estado'),
+                        $request->input('ano'),
+                        );
+
+        if ($searchFilters[0] != null) {
+            array_push($where, ['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
+        }
+
+        if ($searchFilters[1] != null) {
+            array_push($where, ['ano','=', $searchFilters[1]]);
+        }
+
+        //$util = new Util();
+        //$util->exportToCSV($result, array('Estado','Renda Per Capita','Ano'), 'RendaPerCapitaEstadual.csv', array('nome_estado','trendapercapita_estado','ano'));
+        //$result =	vwconsrendapcapest::where($where)->orderBy($searchFilters[0])->get();
+        $result =	vwconsrendapcapest::where($where)->get();
+
+        return view('searchRendaPCapEst', ['tables'=>$result]);
+    }
+
+    //Relatorio 16
+    public function searchHistoricoRendaPCapEst(Request $request)
+    {
+        $result = vwconsrendapcapest::where('nome_estado', request('nomeEstado'))->get();
+        //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
+        foreach ($result as $row) {
+            echo $row->nome_estado;
+            echo $row->trendapercapita_estado;
             echo $row->ano;
             echo '<br>';
         }

@@ -51,14 +51,14 @@ Route::any('/searchAnalfMun/','selectController@searchAnalfMun');
 //Relatorio 10
 Route::get('/searchHistoricoAnalfMun/{nomeMunicipio?}','selectController@searchHistoricoAnalfMun');
 //Relatorio 11
-Route::get('/searchAnalfEst/{search?}','selectController@searchAnalfEst');
+Route::any('/searchAnalfEst/','selectController@searchAnalfEst');
 //Relatorio 12
 Route::get('/searchHistoricoAnalfEst/{nomeEstado?}','selectController@searchHistoricoAnalfEst');
 //Relatorio 13
-Route::get('/searchRendaPCapMun/{search?}','selectController@searchRendaPCapMun');
+Route::any('/searchRendaPCapMun/','selectController@searchRendaPCapMun');
 //Relatorio 14
 Route::get('/searchHistoricoRendaPCapMun/{nomeMunicipio?}','selectController@searchHistoricoRendaPCapMun');
 //Relatorio 15
-Route::get('/searchRendaPCapEst/{search?}','selectController@searchRendaPCapEst');
+Route::any('/searchRendaPCapEst/','selectController@searchRendaPCapEst');
 //Relatorio 16
 Route::get('/searchHistoricoRendaPCapEst/{nomeEstado?}','selectController@searchHistoricoRendaPCapEst');

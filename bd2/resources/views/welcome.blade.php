@@ -10,13 +10,18 @@
                 <h3>Banco de Dados</div>
   <div class="panel-body animatedLong fadeInDown" style="text-align: center;">
       <tr>
-  <td style="padding: 8px;"> <a href="{{'index.php/searchIDH/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar IDH</a> </td>
-    <td style="padding: 8px;"> <a href="{{'index.php/searchIDHM/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar IDHM</a> </td>
+  <td style="padding: 8px;"> <a href="{{'index.php/searchIDH/'}}" class="btn btn-primary" style="width: 200px;">IDH</a> </td>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchIDHM/'}}" class="btn btn-primary" style="width: 200px;">IDH Municipal</a> </td>
     <tr>
-    <td style="padding: 8px;"> <a href="{{'index.php/searchMortMun/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Mortalidade Município</a> </td>
-    <td style="padding: 8px;"> <a href="{{'index.php/searchMortEst/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Mortalidade Estadual</a> </td>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchMortMun/'}}" class="btn btn-primary" style="width: 200px;">Mortalidade Município</a> </td>
+    <td style="padding: 8px;"> <a href="{{'index.php/searchMortEst/'}}" class="btn btn-primary" style="width: 200px;">Mortalidade Estadual</a> </td>
     <tr>
-      <td style="padding: 8px;"> <a href="{{'index.php/searchAnalfMun/'}}" class="btn btn-primary" style="width: 200px;">Pesquisar Anafalbetismo Municipal</a> </td>
+      <td style="padding: 8px;"> <a href="{{'index.php/searchAnalfMun/'}}" class="btn btn-primary" style="width: 200px;">Anafalbetismo Municipal</a> </td>
+        <td style="padding: 8px;"> <a href="{{'index.php/searchAnalfEst/'}}" class="btn btn-primary" style="width: 200px;">Anafalbetismo Estadual</a> </td>
+        <tr>
+          <td style="padding: 8px;"> <a href="{{'index.php/searchRendaPCapMun/'}}" class="btn btn-primary" style="width: 200px;">Renda/Capita Municipal</a> </td>
+            <td style="padding: 8px;"> <a href="{{'index.php/searchRendaPCapEst/'}}" class="btn btn-primary" style="width: 200px;">Renda/Capita Estadual</a> </td>
+
 
   </table>
 </div>
