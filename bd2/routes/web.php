@@ -34,9 +34,9 @@ Route::get('/teste/{auxiliar?}','selectController@teste');
 Route::get('/showTable/{tName?}','selectController@index');
 
 //Relatorio 1
-Route::get('/searchIDHM/{search}','selectController@searchIDHM')->name('searchIDHM');
+Route::any('/searchIDHM/','selectController@searchIDHM')->name('searchIDHM');
 //Relatorio 2
-Route::get('/searchHistoricoIDHM/{nomeMunicipio?}','selectController@searchHistoricoIDHM');
+Route::any('/historicoIDHM/','selectController@searchHistoricoIDHM');
 //Relatorio 3
 Route::get('/searchIDH/{search?}','selectController@searchIDH')->name('selectRoute');
 //Relatorio 4

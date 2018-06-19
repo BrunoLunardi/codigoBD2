@@ -8,7 +8,7 @@ class vwhistoricoidhm extends Model
 {
     protected $fillable = [
         'nome_municipio',
-        'idhm',
+        'tidhm',
         'ano',
     ];
 }
