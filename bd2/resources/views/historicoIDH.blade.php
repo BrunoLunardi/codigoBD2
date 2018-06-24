@@ -7,7 +7,9 @@
 
 
       <div class="form-group">
-        {{ Form::label('nome_estado', 'Nome do Estado:') }} {{ Form::text('nome_estado', null, ['class' => 'form-control']) }}
+        {{ Form::label('nome_estado1', 'Nome do Estado:') }} {{ Form::text('nome_estado1', null, ['class' => 'form-control']) }}
+          {{ Form::label('nome_estado2', 'Nome do Estado:') }} {{ Form::text('nome_estado2', null, ['class' => 'form-control']) }}
+            {{ Form::label('nome_estado3', 'Nome do Estado:') }} {{ Form::text('nome_estado3', null, ['class' => 'form-control']) }}
       </div>
       {{ Form::submit('Submit', ['class' => 'btn btn-info']) }} {{ Form::close() }}
 

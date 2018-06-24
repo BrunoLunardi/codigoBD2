@@ -25,8 +25,8 @@ use App\vwconsrendapcapest;//Relatorio 15 e 16 - Model
 
 class selectController extends Controller
 {
-  private $csvData;
-  private $csvTable;
+    private $csvData;
+    private $csvTable;
     public function index(Request $request)
     {
         if ($request['tName'] != null) {
@@ -45,9 +45,11 @@ class selectController extends Controller
 
     public function teste(Request $request)
     {
-        $teste = vwconsidhm::all();
+        $teste = vwconsidhm::where('nome_municipio',"Abaiara")->get();
 
-        foreach ($teste as $row) {
+        if (count($teste) != 0)
+        echo $teste[0]->nome_municipio;
+        /* foreach ($teste as $row) {
             echo $row->id_estado;
             echo " | ";
             echo $row->nome_estado;
@@ -69,6 +71,7 @@ class selectController extends Controller
             echo $row->classificacao;
             echo "<br>";
         }
+        */
     }
 
     //Relatorio 1 PRONTO
@@ -100,10 +103,10 @@ class selectController extends Controller
         }
         $result =	vwconsidhm::where($where)->get();
 
-                        session(['csvVar' => array('nome_municipio','tidhm','ano')]);
-                        session(['csvData' => array('Municipio','IDHM','Ano')]);
-                        session(['csvTitle' => 'IDHMunicipal.csv']);
-                        session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_municipio','tidhm','ano')]);
+        session(['csvData' => array('Municipio','IDHM','Ano')]);
+        session(['csvTitle' => 'IDHMunicipal.csv']);
+        session(['csvTable' => $result]);
 
         return view('searchIDHM', ['tables'=>$result]);
     }
@@ -167,10 +170,10 @@ class selectController extends Controller
         $result = vwconsidh::where($where)->get();
 
 
-                session(['csvVar' => array('nome_estado','tidh','ano')]);
-                session(['csvTitle' => 'IDHEstadual.csv']);
-                session(['csvData' => array('Estado','IDH','Ano')]);
-                session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_estado','tidh','ano')]);
+        session(['csvTitle' => 'IDHEstadual.csv']);
+        session(['csvData' => array('Estado','IDH','Ano')]);
+        session(['csvTable' => $result]);
 
 
         return view('searchIDH', ['tables'=>$result]);
@@ -178,21 +181,70 @@ class selectController extends Controller
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
     {
-        $result = vwhistoricoidh::where('nome_estado', $request->input('nome_estado'))->get();
+        $result1 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado1'))->get();
+        $result2 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado2'))->get();
+        $result3 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado3'))->get();
+
+        $array0 = array("1991");
+        $array1 = array("2000");
+        $array2 = array("2010");
+
 
         $historico = \Lava::DataTable();
-        $historico->addDateColumn('Ano')
-                        ->addNumberColumn('IDH')
-                        ->setDateTimeFormat('Y');
-        $nomeMun = 'null';
-        foreach ($result as $row) {
-            $historico->addRow(array(
-                                strval($row->ano),$row->tidh));
-            $nomeMun = $row->nome_municipio;
+        $historico->addDateColumn('Ano')->setDateTimeFormat('Y');
+
+        $mostraGrafico = false;
+        $nomeMun = '';
+        if (count($result1) != 0) {
+            array_push($array0, $result1[0]->tidh);
+            array_push($array1, $result1[1]->tidh);
+            array_push($array2, $result1[2]->tidh);
+            $historico->addNumberColumn($result1[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+            $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
+          }else
+            $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
+            $mostraGrafico = true;
         }
 
+
+        if (count($result2) != 0) {
+            array_push($array0, $result2[0]->tidh);
+            array_push($array1, $result2[1]->tidh);
+            array_push($array2, $result2[2]->tidh);
+            $historico->addNumberColumn($result2[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+            $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
+          }else
+            $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
+            $mostraGrafico = true;
+        }
+
+
+        if (count($result3) != 0) {
+            array_push($array0, $result3[0]->tidh);
+            array_push($array1, $result3[1]->tidh);
+            array_push($array2, $result3[2]->tidh);
+            $historico->addNumberColumn($result3[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+            $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
+          }else
+            $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
+            $mostraGrafico = true;
+        }
+
+        $historico->addRow($array0);
+        $historico->addRow($array1);
+        $historico->addRow($array2);
+
+
+
+
         $titulo = 'Titulo';
-        if ($nomeMun!='null') {
+        if ($mostraGrafico) {
             $titulo = 'Histórico de IDH em '.$nomeMun;
         } else {
             $titulo = '-1';
@@ -203,7 +255,7 @@ class selectController extends Controller
 
                         ]);
 
-        return view('historicoIDHView', ['tables'=>$result,'titulo'=>$titulo]);
+        return view('historicoIDH', ['tables'=>$result1,'titulo'=>$titulo]);
     }
 
     //Relatorio 5 PRONTO
@@ -236,10 +288,10 @@ class selectController extends Controller
         //$result = vwconsmortmun::where($where)->orderBy($searchFilters[0])->get();
 
 
-                        session(['csvVar' => array('nome_municipio','tmortalidade_municipio','ano')]);
-                        session(['csvData' => array('Municipio','Mortalidade','Ano')]);
-                        session(['csvTitle' => 'MortalidadeMunicipal.csv']);
-                        session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_municipio','tmortalidade_municipio','ano')]);
+        session(['csvData' => array('Municipio','Mortalidade','Ano')]);
+        session(['csvTitle' => 'MortalidadeMunicipal.csv']);
+        session(['csvTable' => $result]);
 
         return view('searchMortMun', ['tables'=>$result]);
     }
@@ -298,10 +350,10 @@ class selectController extends Controller
         $result = vwconsmortest::where($where)->get();
 
 
-                session(['csvVar' => array('nome_estado','tmortalidade_estado','ano')]);
-                session(['csvTitle' => 'MortalidadeEstadual.csv']);
-                session(['csvData' => array('Estado','Mortalidade','Ano')]);
-                session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_estado','tmortalidade_estado','ano')]);
+        session(['csvTitle' => 'MortalidadeEstadual.csv']);
+        session(['csvData' => array('Estado','Mortalidade','Ano')]);
+        session(['csvTable' => $result]);
 
         return view('searchMortEst', ['tables'=>$result]);
 
@@ -368,10 +420,10 @@ class selectController extends Controller
         $result =	vwconsanalfmun::where($where)->get();
 
 
-                        session(['csvVar' => array('nome_municipio','tanalfabetismo_municipio','ano')]);
-                        session(['csvData' => array('Municipio','Anafalbetismo','Ano')]);
-                        session(['csvTitle' => 'AnafalbetismoMunicipal.csv']);
-                        session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_municipio','tanalfabetismo_municipio','ano')]);
+        session(['csvData' => array('Municipio','Anafalbetismo','Ano')]);
+        session(['csvTitle' => 'AnafalbetismoMunicipal.csv']);
+        session(['csvTable' => $result]);
 
         return view('searchAnalfMun', ['tables'=>$result]);
     }
@@ -429,10 +481,10 @@ class selectController extends Controller
         $result =	vwconsanalfest::where($where)->get();
 
 
-                session(['csvVar' => array('nome_estado','tanalfabetismo_estado','ano')]);
-                session(['csvTitle' => 'AnafalbetismoEstadual.csv']);
-                session(['csvData' => array('Estado','Anafalbetismo','Ano')]);
-                session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_estado','tanalfabetismo_estado','ano')]);
+        session(['csvTitle' => 'AnafalbetismoEstadual.csv']);
+        session(['csvData' => array('Estado','Anafalbetismo','Ano')]);
+        session(['csvTable' => $result]);
 
         return view('searchAnalfEst', ['tables'=>$result]);
     }
@@ -497,10 +549,10 @@ class selectController extends Controller
         $result =	vwconsrendapcapmun::where($where)->get();
 
 
-                session(['csvVar' => array('nome_municipio','trendapercapita_municipio','ano')]);
-                session(['csvData' => array('Municipio','Renda Per Capita','Ano')]);
-                session(['csvTitle' => 'RendaPerCapitaMunicipal.csv']);
-                session(['csvTable' => $result]);
+        session(['csvVar' => array('nome_municipio','trendapercapita_municipio','ano')]);
+        session(['csvData' => array('Municipio','Renda Per Capita','Ano')]);
+        session(['csvTitle' => 'RendaPerCapitaMunicipal.csv']);
+        session(['csvTable' => $result]);
 
         return view('searchRendaPCapMun', ['tables'=>$result]);
     }
@@ -600,9 +652,8 @@ class selectController extends Controller
 
     public static function getCSV()
     {
+        $util = new Util();
 
-      $util = new Util();
-
-      $util->exportToCSV(session('csvTable'), session('csvData'), session('csvTitle'), session('csvVar'));
+        $util->exportToCSV(session('csvTable'), session('csvData'), session('csvTitle'), session('csvVar'));
     }
 }
