@@ -25,6 +25,8 @@ use App\vwconsrendapcapest;//Relatorio 15 e 16 - Model
 
 class selectController extends Controller
 {
+  private $csvData;
+  private $csvTable;
     public function index(Request $request)
     {
         if ($request['tName'] != null) {
@@ -96,7 +98,12 @@ class selectController extends Controller
         if ($searchFilters[3] != null) {
             array_push($where, ['classificacao','LIKE', $searchFilters[3]]);
         }
-        $result =	vwconsidhm::where($where)->orderBy($searchFilters[0])->get();
+        $result =	vwconsidhm::where($where)->get();
+
+                        session(['csvVar' => array('nome_municipio','tidhm','ano')]);
+                        session(['csvData' => array('Municipio','IDHM','Ano')]);
+                        session(['csvTitle' => 'IDHMunicipal.csv']);
+                        session(['csvTable' => $result]);
 
         return view('searchIDHM', ['tables'=>$result]);
     }
@@ -159,37 +166,45 @@ class selectController extends Controller
 
         $result = vwconsidh::where($where)->get();
 
+
+                session(['csvVar' => array('nome_estado','tidh','ano')]);
+                session(['csvTitle' => 'IDHEstadual.csv']);
+                session(['csvData' => array('Estado','IDH','Ano')]);
+                session(['csvTable' => $result]);
+
+
         return view('searchIDH', ['tables'=>$result]);
     }
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
     {
-        $result = vwhistoricoidh::where('nome_estado', $request->input('nomeEstado'))->get();
+        $result = vwhistoricoidh::where('nome_estado', $request->input('nome_estado'))->get();
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->tidh));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de IDH em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de IDH em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoIDHView', ['tables'=>$result,'titulo'=>$titulo]);}
+        return view('historicoIDHView', ['tables'=>$result,'titulo'=>$titulo]);
+    }
 
     //Relatorio 5 PRONTO
     public function searchMortMun(Request $request)
@@ -221,38 +236,44 @@ class selectController extends Controller
         //$result = vwconsmortmun::where($where)->orderBy($searchFilters[0])->get();
 
 
+                        session(['csvVar' => array('nome_municipio','tmortalidade_municipio','ano')]);
+                        session(['csvData' => array('Municipio','Mortalidade','Ano')]);
+                        session(['csvTitle' => 'MortalidadeMunicipal.csv']);
+                        session(['csvTable' => $result]);
+
         return view('searchMortMun', ['tables'=>$result]);
     }
 
     //Relatorio 6
     public function searchHistoricoMortMun(Request $request)
     {
-        $result = vwhistoricomortmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
+        $result = vwhistoricomortmun::where('nome_municipio', $request->input('nome_municipio'))->get();
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->tmortalidade_municipio));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de Mortalidade em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de Mortalidade em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoMortMun', ['tables'=>$result,'titulo'=>$titulo]);}
+        return view('historicoMortMun', ['tables'=>$result,'titulo'=>$titulo]);
+    }
 
     //Relatorio 7 PRONTO
     public function searchMortEst(Request $request)
@@ -277,48 +298,46 @@ class selectController extends Controller
         $result = vwconsmortest::where($where)->get();
 
 
+                session(['csvVar' => array('nome_estado','tmortalidade_estado','ano')]);
+                session(['csvTitle' => 'MortalidadeEstadual.csv']);
+                session(['csvData' => array('Estado','Mortalidade','Ano')]);
+                session(['csvTable' => $result]);
+
         return view('searchMortEst', ['tables'=>$result]);
 
-
-        $result = vwconsmortest::all();
-        foreach ($result as $row) {
-            echo $row->nome_estado;
-            echo $row->tmortalidade_estado;
-            echo $row->ano;
-            echo '<br>';
-        }
         //return view('selectView',['tables'=>$result]);
     }
 
     //Relatorio 8
     public function searchHistoricoMortEst(Request $request)
     {
-        $result = vwconsanalfmun::where('nome_estado', $request->input('nomeEstado'))->get();
+        $result = vwconsanalfmun::where('nome_estado', $request->input('nome_estado'))->get();
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->tmortalidade_estado));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de Mortalidade em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de Mortalidade em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoMortEst', ['tables'=>$result,'titulo'=>$titulo]);}
+        return view('historicoMortEst', ['tables'=>$result,'titulo'=>$titulo]);
+    }
 
     //Relatorio 9 PRONTO
     public function searchAnalfMun(Request $request)
@@ -348,39 +367,46 @@ class selectController extends Controller
         //$result =	vwconsanalfmun::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsanalfmun::where($where)->get();
 
+
+                        session(['csvVar' => array('nome_municipio','tanalfabetismo_municipio','ano')]);
+                        session(['csvData' => array('Municipio','Anafalbetismo','Ano')]);
+                        session(['csvTitle' => 'AnafalbetismoMunicipal.csv']);
+                        session(['csvTable' => $result]);
+
         return view('searchAnalfMun', ['tables'=>$result]);
     }
 
     //Relatorio 10
     public function searchHistoricoAnalfMun(Request $request)
     {
-        $result = vwconsanalfmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
+        $result = vwconsanalfmun::where('nome_municipio', $request->input('nome_municipio'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->searchHistoricoAnalfMun));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoAnalfMun', ['tables'=>$result,'titulo'=>$titulo]);}
+        return view('historicoAnalfMun', ['tables'=>$result,'titulo'=>$titulo]);
+    }
 
     //Relatorio 11 PRONTO
     public function searchAnalfEst(Request $request)
@@ -401,39 +427,46 @@ class selectController extends Controller
 
         //    $result =	vwconsanalfest::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsanalfest::where($where)->get();
+
+
+                session(['csvVar' => array('nome_estado','tanalfabetismo_estado','ano')]);
+                session(['csvTitle' => 'AnafalbetismoEstadual.csv']);
+                session(['csvData' => array('Estado','Anafalbetismo','Ano')]);
+                session(['csvTable' => $result]);
+
         return view('searchAnalfEst', ['tables'=>$result]);
     }
 
     //Relatorio 12
     public function searchHistoricoAnalfEst(Request $request)
     {
-        $result = vwconsanalfest::where('nome_estado', $request->input('nomeEstado'))->get();
+        $result = vwconsanalfest::where('nome_estado', $request->input('nome_estado'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->tanalfabetismo_estado));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de Analfabetismo em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoAnalfEst', ['tables'=>$result,'titulo'=>$titulo]);
+        return view('historicoAnalfEst', ['tables'=>$result,'titulo'=>$titulo]);
     }
 
     //Relatorio 13
@@ -462,39 +495,46 @@ class selectController extends Controller
 
         //    $result =	vwconsrendapcapmun::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsrendapcapmun::where($where)->get();
+
+
+                session(['csvVar' => array('nome_municipio','trendapercapita_municipio','ano')]);
+                session(['csvData' => array('Municipio','Renda Per Capita','Ano')]);
+                session(['csvTitle' => 'RendaPerCapitaMunicipal.csv']);
+                session(['csvTable' => $result]);
+
         return view('searchRendaPCapMun', ['tables'=>$result]);
     }
 
     //Relatorio 14
     public function searchHistoricoRendaPCapMun(Request $request)
     {
-        $result = vwconsrendapcapmun::where('nome_municipio', $request->input('nomeMunicipio'))->get();
+        $result = vwconsrendapcapmun::where('nome_municipio', $request->input('nome_municipio'))->get();
         //FACA UM GRAFICO COM ESSAS INFORMACOES (OLHAR DRE)
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->trendapercapita_municipio));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de Renda em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de Renda em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoRendaMun', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
+        return view('historicoRendaMun', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
     }
 
     //Relatorio 15
@@ -515,10 +555,14 @@ class selectController extends Controller
             array_push($where, ['ano','=', $searchFilters[1]]);
         }
 
-        //$util = new Util();
-        //$util->exportToCSV($result, array('Estado','Renda Per Capita','Ano'), 'RendaPerCapitaEstadual.csv', array('nome_estado','trendapercapita_estado','ano'));
         //$result =	vwconsrendapcapest::where($where)->orderBy($searchFilters[0])->get();
         $result =	vwconsrendapcapest::where($where)->get();
+
+
+        session(['csvVar' => array('nome_estado','trendapercapita_estado','ano')]);
+        session(['csvTitle' => 'RendaPerCapitaEstadual.csv']);
+        session(['csvData' => array('Estado','Renda Per Capita','Ano')]);
+        session(['csvTable' => $result]);
 
         return view('searchRendaPCapEst', ['tables'=>$result]);
     }
@@ -526,31 +570,39 @@ class selectController extends Controller
     //Relatorio 16
     public function searchHistoricoRendaPCapEst(Request $request)
     {
-        $result = vwconsrendapcapest::where('nome_estado', $request->input('nomeEstado'))->get();
+        $result = vwconsrendapcapest::where('nome_estado', $request->input('nome_estado'))->get();
 
-                $historico = \Lava::DataTable();
-                $historico->addDateColumn('Ano')
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')
                         ->addNumberColumn('IDH')
                         ->setDateTimeFormat('Y');
-                $nomeMun = 'null';
-                foreach ($result as $row) {
-                    $historico->addRow(array(
+        $nomeMun = 'null';
+        foreach ($result as $row) {
+            $historico->addRow(array(
                                 strval($row->ano),$row->trendapercapita_estado));
-                    $nomeMun = $row->nome_municipio;
-                }
+            $nomeMun = $row->nome_municipio;
+        }
 
-                $titulo = 'Titulo';
-                if ($nomeMun!='null') {
-                    $titulo = 'Histórico de IDHM em '.$nomeMun;
-                } else {
-                    $titulo = '-1';
-                }
-                \Lava::LineChart('historicoIDHM', $historico, [
+        $titulo = 'Titulo';
+        if ($nomeMun!='null') {
+            $titulo = 'Histórico de IDHM em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
 
                                                 'height' => '300'
 
                         ]);
 
-                return view('historicoRendaEst', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
+        return view('historicoRendaEst', ['tables'=>$result,'titulo'=>$titulo]);    //ALGUM RETURN QUE VAI PRA VIEW
+    }
+
+    public static function getCSV()
+    {
+
+      $util = new Util();
+
+      $util->exportToCSV(session('csvTable'), session('csvData'), session('csvTitle'), session('csvVar'));
     }
 }

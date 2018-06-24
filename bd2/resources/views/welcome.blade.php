@@ -1,4 +1,5 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app')
+@section('content')
 <div class="container">
   <div class="panel-group" style="text-align: center; margin-left: 125px;">
     <table>
@@ -38,8 +39,8 @@
         <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoIDHM/'}}" class="btn btn-success" style="width: 200px;">Historico IDHM</a></td>
       </tr>
       <tr>
-        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfEst/'}}" class="btn btn-success" style="width: 200px;">Historico Anafalbetismo Estadual</a></td>
-        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfMun/'}}" class="btn btn-success" style="width: 200px;">Historico Anafalbetismo Municipal</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfEst/'}}" class="btn btn-success" style="width: 200px;">Hist. Anafalbetismo Estadual</a></td>
+        <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoAnalfMun/'}}" class="btn btn-success" style="width: 200px;">Hist. Anafalbetismo Municipal</a></td>
       </tr>
       <tr>
         <td style="padding: 8px;"><a href="{{'index.php/searchHistoricoRendaEst/'}}" class="btn btn-success" style="width: 200px;">Historico Renda Estadual</a></td>

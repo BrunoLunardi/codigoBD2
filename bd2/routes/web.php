@@ -29,11 +29,13 @@ Route::get('/home', function () {
 
 Route::get('/teste/{auxiliar?}','selectController@teste');
 Route::get('/showTable/{tName?}','selectController@index');
+Route::any('/getCSV/','selectController@getCSV');
+
 
 //Relatorio 1
 Route::any('/searchIDHM/','selectController@searchIDHM');
 //Relatorio 2
-Route::any('/historicoIDHM/','selectController@searchHistoricoIDHM');
+Route::any('/searchHistoricoIDHM/','selectController@searchHistoricoIDHM');
 //Relatorio 3
 Route::any('/searchIDH/','selectController@searchIDH');
 //Relatorio 4
@@ -57,8 +59,8 @@ Route::any('/searchHistoricoAnalfEst/','selectController@searchHistoricoAnalfEst
 //Relatorio 13
 Route::any('/searchRendaPCapMun/','selectController@searchRendaPCapMun');
 //Relatorio 14
-Route::any('/searchHistoricoRendaPCapMun/','selectController@searchHistoricoRendaPCapMun');
+Route::any('/searchHistoricoRendaMun/','selectController@searchHistoricoRendaPCapMun');
 //Relatorio 15
 Route::any('/searchRendaPCapEst/','selectController@searchRendaPCapEst');
 //Relatorio 16
-Route::any('/searchHistoricoRendaPCapEst/','selectController@searchHistoricoRendaPCapEst');
+Route::any('/searchHistoricoRendaEst/','selectController@searchHistoricoRendaPCapEst');

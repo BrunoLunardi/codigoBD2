@@ -25,7 +25,7 @@
           </div>
           {{ Form::submit('Buscar', ['class' => 'btn btn-info']) }} {{ Form::close() }}
           <br>
-
+<a href="{{action('selectController@getCSV')}}" class="btn btn-primary" style="width: 200px;">Exportar para CSV</a>
         </div>
         <div class="panel-group" style="text-align: center; width: 1000px; margin:0 auto;">
 
