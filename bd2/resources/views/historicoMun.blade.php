@@ -4,9 +4,9 @@
 <div class="panel-body">
 {{ Form::open(array('action' => $control)) }}
 <div class="form-group">
-{{ Form::label('nome_estado1', 'Nome do Estado:') }} {{ Form::text('nome_estado1', null, ['class' => 'form-control']) }}
-{{ Form::label('nome_estado2', 'Nome do Estado:') }} {{ Form::text('nome_estado2', null, ['class' => 'form-control']) }}
-{{ Form::label('nome_estado3', 'Nome do Estado:') }} {{ Form::text('nome_estado3', null, ['class' => 'form-control']) }}
+{{ Form::label('nome_municipio1', 'Nome do Município:') }} {{ Form::text('nome_municipio1', null, ['class' => 'form-control']) }}
+{{ Form::label('nome_municipio2', 'Nome do Município:') }} {{ Form::text('nome_municipio2', null, ['class' => 'form-control']) }}
+{{ Form::label('nome_municipio3', 'Nome do Município:') }} {{ Form::text('nome_municipio3', null, ['class' => 'form-control']) }}
 </div>
 {{ Form::submit('Submit', ['class' => 'btn btn-info']) }} {{ Form::close() }}
 </div>

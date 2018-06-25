@@ -20,7 +20,7 @@
     </div>
     @if ($mostraGrafico)
     <div class="panel-heading">
-      <h1>Geo Relatorio de {{$titulo}} em {{$ano}}</div>
+      <h1>Relatório GeoEspacial de {{$titulo}} em {{$ano}}</div>
   <div class= "panel-body"> <div id="pop-div"></div> </div>
   @geochart('Popularity', 'pop-div')
   @endif
