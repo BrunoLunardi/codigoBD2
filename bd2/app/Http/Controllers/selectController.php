@@ -45,10 +45,11 @@ class selectController extends Controller
 
     public function teste(Request $request)
     {
-        $teste = vwconsidhm::where('nome_municipio',"Abaiara")->get();
+        $teste = vwconsidhm::where('nome_municipio', "Abaiara")->get();
 
-        if (count($teste) != 0)
-        echo $teste[0]->nome_municipio;
+        if (count($teste) != 0) {
+            echo $teste[0]->nome_municipio;
+        }
         /* foreach ($teste as $row) {
             echo $row->id_estado;
             echo " | ";
@@ -202,9 +203,10 @@ class selectController extends Controller
             $historico->addNumberColumn($result1[0]->nome_estado);
 
             if (!$mostraGrafico) {
-            $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
-          }else
-            $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
+                $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
+            }
             $mostraGrafico = true;
         }
 
@@ -216,9 +218,10 @@ class selectController extends Controller
             $historico->addNumberColumn($result2[0]->nome_estado);
 
             if (!$mostraGrafico) {
-            $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
-          }else
-            $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
+                $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
+            }
             $mostraGrafico = true;
         }
 
@@ -230,9 +233,10 @@ class selectController extends Controller
             $historico->addNumberColumn($result3[0]->nome_estado);
 
             if (!$mostraGrafico) {
-            $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
-          }else
-            $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
+                $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
+            }
             $mostraGrafico = true;
         }
 
@@ -553,7 +557,6 @@ class selectController extends Controller
         session(['csvData' => array('Municipio','Renda Per Capita','Ano')]);
         session(['csvTitle' => 'RendaPerCapitaMunicipal.csv']);
         session(['csvTable' => $result]);
-
         return view('searchRendaPCapMun', ['tables'=>$result]);
     }
 
@@ -655,5 +658,162 @@ class selectController extends Controller
         $util = new Util();
 
         $util->exportToCSV(session('csvTable'), session('csvData'), session('csvTitle'), session('csvVar'));
+    }
+
+
+
+    public function graficoLEst($result1, $result2, $result3)
+    {
+        $array0 = array("1991");
+        $array1 = array("2000");
+        $array2 = array("2010");
+
+
+        $historico = \Lava::DataTable();
+        $historico->addDateColumn('Ano')->setDateTimeFormat('Y');
+
+        $mostraGrafico = false;
+        $nomeMun = '';
+        if (count($result1) != 0) {
+            array_push($array0, $result1[0]->tidh);
+            array_push($array1, $result1[1]->tidh);
+            array_push($array2, $result1[2]->tidh);
+            $historico->addNumberColumn($result1[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+                $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
+            }
+            $mostraGrafico = true;
+        }
+
+
+        if (count($result2) != 0) {
+            array_push($array0, $result2[0]->tidh);
+            array_push($array1, $result2[1]->tidh);
+            array_push($array2, $result2[2]->tidh);
+            $historico->addNumberColumn($result2[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+                $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
+            }
+            $mostraGrafico = true;
+        }
+
+
+        if (count($result3) != 0) {
+            array_push($array0, $result3[0]->tidh);
+            array_push($array1, $result3[1]->tidh);
+            array_push($array2, $result3[2]->tidh);
+            $historico->addNumberColumn($result3[0]->nome_estado);
+
+            if (!$mostraGrafico) {
+                $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
+            } else {
+                $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
+            }
+            $mostraGrafico = true;
+        }
+
+        $historico->addRow($array0);
+        $historico->addRow($array1);
+        $historico->addRow($array2);
+
+
+
+
+        $titulo = 'Titulo';
+        if ($mostraGrafico) {
+            $titulo = 'Histórico de IDH em '.$nomeMun;
+        } else {
+            $titulo = '-1';
+        }
+        \Lava::LineChart('historicoIDHM', $historico, [
+
+                                                'height' => '300'
+
+                        ]);
+
+        return view('historicoIDH', ['tables'=>$result1,'titulo'=>$titulo]);
+    }
+
+    public function geoEstadual(Request $request)
+    {
+        $result = array();
+        $geoGraph = \Lava::DataTable();
+        $mostraGrafico = true;
+        $titulo = 'null';
+
+        switch ($request->input('indice')) {
+        case 'idh':
+          $result = vwhistoricoidh::where('ano', $request->input('ano'))->get();
+$titulo = 'IDH';
+
+
+                  $geoGraph->addStringColumn('Estado')
+                   ->addNumberColumn('IDH');
+
+                   foreach ($result as $row) {
+                       $geoGraph->addRow(array($row->nome_estado, $row->tidh));
+                   }
+          break;
+
+          case 'analf':
+            $result = vwconsanalfest::where('ano', $request->input('ano'))->get();
+            $titulo = 'Anafalbetismo';
+
+
+                    $geoGraph->addStringColumn('Estado')
+                     ->addNumberColumn('Anafalbetismo');
+
+                     foreach ($result as $row) {
+                         $geoGraph->addRow(array($row->nome_estado, $row->tanalfabetismo_estado));
+                     }
+            break;
+
+            case 'mort':
+              $result = vwconsmortest::where('ano', $request->input('ano'))->get();
+              $titulo = 'Mortalidade';
+
+
+                      $geoGraph->addStringColumn('Estado')
+                       ->addNumberColumn('Mortalidade');
+
+                       foreach ($result as $row) {
+                           $geoGraph->addRow(array($row->nome_estado, $row->tmortalidade_estado));
+                       }
+              break;
+
+              case 'renda':
+                $result = vwconsrendapcapest::where('ano', $request->input('ano'))->get();
+                $titulo = 'Renda Per Capita';
+
+
+                        $geoGraph->addStringColumn('Estado')
+                         ->addNumberColumn('RendaPerCapita');
+
+                         foreach ($result as $row) {
+                             $geoGraph->addRow(array($row->nome_estado, $row->trendapercapita_estado));
+                         }
+                break;
+
+        default:
+          $mostraGrafico = false;
+          break;
+      }
+
+
+
+
+
+        \Lava::GeoChart('Popularity', $geoGraph, [
+      'region' => 'BR',
+      'resolution' => 'provinces',
+
+      ]);
+    return view('geoEstadual',['mostraGrafico' => $mostraGrafico, 'titulo' => $titulo,'ano' => $request->input('ano')]);
     }
 }

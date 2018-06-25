@@ -34,7 +34,7 @@
                 <div class="navbar-header" >
 
 
-<a  href="{{ url('/') }}"><h1>COM231 - SISTEMA DE CONSULTA INDICATIVOS SOCIAIS</h1></a>
+<a  href="{{ url('/') }}"><h1>COM231 - SISTEMA DE CONSULTA INDICADORES SOCIAIS</h1></a>
 <br>
 <br>
                     <!-- Collapsed Hamburger -->

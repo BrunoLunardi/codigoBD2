@@ -30,6 +30,7 @@ Route::get('/home', function () {
 Route::get('/teste/{auxiliar?}','selectController@teste');
 Route::get('/showTable/{tName?}','selectController@index');
 Route::any('/getCSV/','selectController@getCSV');
+Route::any('/geoRelatorioEst/','selectController@geoEstadual');
 
 
 //Relatorio 1

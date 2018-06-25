@@ -49,6 +49,8 @@
 
 
     </table>
+
+    <a href="{{'index.php/geoRelatorioEst/'}}" class="btn btn-success" style="width: 200px;">Relatório GeoEspacial Estadual</a>
 </div>
 </div>
 
