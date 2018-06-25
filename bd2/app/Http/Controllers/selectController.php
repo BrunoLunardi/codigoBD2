@@ -102,7 +102,13 @@ class selectController extends Controller
         if ($searchFilters[3] != null) {
             array_push($where, ['classificacao','LIKE', $searchFilters[3]]);
         }
-        $result =	vwconsidhm::where($where)->get();
+        if ($where != null || !session('firstTime'))
+        $result = vwconsidhm::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
         session(['csvVar' => array('nome_municipio','tidhm','ano')]);
         session(['csvData' => array('Municipio','IDHM','Ano')]);
@@ -128,14 +134,14 @@ class selectController extends Controller
 
 
         $searchFilters = array(
-                                $request->input('nome_municipio'),
+                                $request->input('nome_estado'),
                                 $request->input('ano'),
                                 $request->input('classificacao'),
                         );
 
 
         if ($searchFilters[0] != null) {
-            array_push($where, ['nome_municipio','=', $searchFilters[0]]);
+            array_push($where, ['nome_estado','LIKE', $searchFilters[0]]);
         }
 
         if ($searchFilters[1] != null) {
@@ -146,7 +152,13 @@ class selectController extends Controller
             array_push($where, ['classificacao','=', $searchFilters[2]]);
         }
 
+        if ($where != null || !session('firstTime'))
         $result = vwconsidh::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
 
         session(['csvVar' => array('nome_municipio','tidh','ano')]);
@@ -160,9 +172,9 @@ class selectController extends Controller
     //Relatorio 4
     public function searchHistoricoIDH(Request $request)
     {
-        $result1 = vwhistoricoidh::where('nome_municipio', $request->input('nome_municipio1'))->get();
-        $result2 = vwhistoricoidh::where('nome_municipio', $request->input('nome_municipio2'))->get();
-        $result3 = vwhistoricoidh::where('nome_municipio', $request->input('nome_municipio3'))->get();
+        $result1 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado1'))->get();
+        $result2 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado2'))->get();
+        $result3 = vwhistoricoidh::where('nome_estado', $request->input('nome_estado3'))->get();
 
         return $this->graficoLEst($result1, $result2, $result3, 'idh', 'IDH', 'selectController@searchHistoricoIDH');
     }
@@ -172,7 +184,6 @@ class selectController extends Controller
     {
         $where = array();
 
-
         $searchFilters = array(
                                 $request->input('nome_municipio'),
                                 $request->input('sigla'),
@@ -181,19 +192,27 @@ class selectController extends Controller
                         );
 
 
-        if ($searchFilters[0] != null) {
+        if ($searchFilters[0] != NULL) {
             array_push($where, ['nome_municipio','=', $searchFilters[0]]);
         }
 
-        if ($searchFilters[1] != null) {
+        if ($searchFilters[1] != NULL) {
             array_push($where, ['sigla','=', $searchFilters[1]]);
         }
 
-        if ($searchFilters[2] != null) {
+        if ($searchFilters[2] != NULL) {
             array_push($where, ['ano','=', $searchFilters[2]]);
         }
 
+        if ($where != null || !session('firstTime'))
         $result = vwconsmortmun::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
+
+
         //$result = vwconsmortmun::where($where)->orderBy($searchFilters[0])->get();
 
 
@@ -221,14 +240,14 @@ class selectController extends Controller
     {
         $where = array();
 
-        $searchFilters = array(   $request->input('nome_municipio'),
+        $searchFilters = array(   $request->input('nome_estado'),
                                                 $request->input('ano'),
                                         );
 
 
 
         if ($searchFilters[0] != null) {
-            array_push($where, ['nome_municipio','LIKE', $searchFilters[0]]);
+            array_push($where, ['nome_estado','LIKE', $searchFilters[0]]);
         }
 
         if ($searchFilters[1] != null) {
@@ -236,7 +255,13 @@ class selectController extends Controller
         }
 
         //    $result = vwconsmortest::where($where)->orderBy($searchFilters[0])->get();
+        if ($where != null || !session('firstTime'))
         $result = vwconsmortest::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
 
         session(['csvVar' => array('nome_municipio','tmortalidade_municipio','ano')]);
@@ -252,9 +277,9 @@ class selectController extends Controller
     //Relatorio 8
     public function searchHistoricoMortEst(Request $request)
     {
-        $result1 = vwconsmortest::where('nome_municipio', $request->input('nome_municipio1'))->get();
-        $result2 = vwconsmortest::where('nome_municipio', $request->input('nome_municipio2'))->get();
-        $result3 = vwconsmortest::where('nome_municipio', $request->input('nome_municipio3'))->get();
+        $result1 = vwconsmortest::where('nome_estado', $request->input('nome_estado1'))->get();
+        $result2 = vwconsmortest::where('nome_estado', $request->input('nome_estado2'))->get();
+        $result3 = vwconsmortest::where('nome_estado', $request->input('nome_estado3'))->get();
 
         return $this->graficoLEst($result1, $result2, $result3, 'mort', 'Mortalidade', 'selectController@searchHistoricoMortEst');
     }
@@ -285,7 +310,13 @@ class selectController extends Controller
         }
 
         //$result =	vwconsanalfmun::where($where)->orderBy($searchFilters[0])->get();
-        $result =	vwconsanalfmun::where($where)->get();
+        if ($where != null || !session('firstTime'))
+        $result = vwconsanalfmun::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
 
         session(['csvVar' => array('nome_municipio','tanalfabetismo_municipio','ano')]);
@@ -313,20 +344,26 @@ class selectController extends Controller
     {
         $where = array();
         $searchFilters = array(
-                                                        $request->input('nome_municipio'),
+                                                        $request->input('nome_estado'),
                                                         $request->input('ano'),
                                                 );
 
         if ($searchFilters[0] != null) {
-            array_push($where, ['nome_municipio','LIKE', '%'.$searchFilters[1].'%']);
+            array_push($where, ['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
         }
 
         if ($searchFilters[1] != null) {
-            array_push($where, ['ano','=', $searchFilters[2]]);
+            array_push($where, ['ano','=', $searchFilters[1]]);
         }
 
         //    $result =	vwconsanalfest::where($where)->orderBy($searchFilters[0])->get();
-        $result =	vwconsanalfest::where($where)->get();
+        if ($where != null || !session('firstTime'))
+        $result = vwconsanalfest::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
 
         session(['csvVar' => array('nome_municipio','tanalfabetismo_municipio','ano')]);
@@ -340,9 +377,9 @@ class selectController extends Controller
     //Relatorio 12
     public function searchHistoricoAnalfEst(Request $request)
     {
-        $result1 = vwconsanalfest::where('nome_municipio', $request->input('nome_municipio1'))->get();
-        $result2 = vwconsanalfest::where('nome_municipio', $request->input('nome_municipio2'))->get();
-        $result3 = vwconsanalfest::where('nome_municipio', $request->input('nome_municipio3'))->get();
+        $result1 = vwconsanalfest::where('nome_estado', $request->input('nome_estado1'))->get();
+        $result2 = vwconsanalfest::where('nome_estado', $request->input('nome_estado2'))->get();
+        $result3 = vwconsanalfest::where('nome_estado', $request->input('nome_estado3'))->get();
 
         return $this->graficoLEst($result1, $result2, $result3, 'analf', 'Anafalbetismo', 'selectController@searchHistoricoAnalfEst');
     }
@@ -372,7 +409,13 @@ class selectController extends Controller
         }
 
         //    $result =	vwconsrendapcapmun::where($where)->orderBy($searchFilters[0])->get();
-        $result =	vwconsrendapcapmun::where($where)->get();
+        if ($where != null || !session('firstTime'))
+        $result = vwconsrendapcapmun::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
 
 
         session(['csvVar' => array('nome_municipio','trendapercapita_municipio','ano')]);
@@ -398,12 +441,12 @@ class selectController extends Controller
         $where = array();
 
         $searchFilters = array(
-                        $request->input('nome_municipio'),
+                        $request->input('nome_estado'),
                         $request->input('ano'),
                         );
 
         if ($searchFilters[0] != null) {
-            array_push($where, ['nome_municipio','LIKE', '%'.$searchFilters[0].'%']);
+            array_push($where, ['nome_estado','LIKE', '%'.$searchFilters[0].'%']);
         }
 
         if ($searchFilters[1] != null) {
@@ -411,7 +454,14 @@ class selectController extends Controller
         }
 
         //$result =	vwconsrendapcapest::where($where)->orderBy($searchFilters[0])->get();
-        $result =	vwconsrendapcapest::where($where)->get();
+        if ($where != null || !session('firstTime'))
+        $result = vwconsrendapcapest::where($where)->get();
+        else {
+          $result = array();
+        }
+        session(['firstTime' => false]);
+
+
 
 
         session(['csvVar' => array('nome_municipio','trendapercapita_municipio','ano')]);
@@ -425,9 +475,9 @@ class selectController extends Controller
     //Relatorio 16
     public function searchHistoricoRendaPCapEst(Request $request)
     {
-        $result1 = vwconsrendapcapest::where('nome_municipio', $request->input('nome_municipio1'))->get();
-        $result2 = vwconsrendapcapest::where('nome_municipio', $request->input('nome_municipio2'))->get();
-        $result3 = vwconsrendapcapest::where('nome_municipio', $request->input('nome_municipio3'))->get();
+        $result1 = vwconsrendapcapest::where('nome_estado', $request->input('nome_estado1'))->get();
+        $result2 = vwconsrendapcapest::where('nome_estado', $request->input('nome_estado2'))->get();
+        $result3 = vwconsrendapcapest::where('nome_estado', $request->input('nome_estado3'))->get();
 
         return $this->graficoLEst($result1, $result2, $result3, 'renda', 'Renda Per Capita', 'selectController@searchHistoricoRendaPCapEst');
     }
@@ -438,8 +488,6 @@ class selectController extends Controller
 
         $util->exportToCSV(session('csvTable'), session('csvData'), session('csvTitle'), session('csvVar'));
     }
-
-
 
     public function graficoLEst($result1, $result2, $result3, $taxa, $nomeTaxa, $control)
     {
@@ -461,12 +509,12 @@ class selectController extends Controller
                   array_push($array0, $result1[0]->tidh);
                   array_push($array1, $result1[1]->tidh);
                   array_push($array2, $result1[2]->tidh);
-                  $historico->addNumberColumn($result1[0]->nome_municipio);
+                  $historico->addNumberColumn($result1[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result1[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -474,12 +522,12 @@ class selectController extends Controller
                   array_push($array0, $result2[0]->tidh);
                   array_push($array1, $result2[1]->tidh);
                   array_push($array2, $result2[2]->tidh);
-                  $historico->addNumberColumn($result2[0]->nome_municipio);
+                  $historico->addNumberColumn($result2[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result2[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -489,12 +537,12 @@ class selectController extends Controller
                   array_push($array0, $result3[0]->tidh);
                   array_push($array1, $result3[1]->tidh);
                   array_push($array2, $result3[2]->tidh);
-                  $historico->addNumberColumn($result3[0]->nome_municipio);
+                  $historico->addNumberColumn($result3[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result3[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -503,43 +551,43 @@ class selectController extends Controller
               case 'mort':
 
               if (count($result1) != 0) {
-                  array_push($array0, $result1[0]->tmortalidade_municipio);
-                  array_push($array1, $result1[1]->tmortalidade_municipio);
-                  array_push($array2, $result1[2]->tmortalidade_municipio);
-                  $historico->addNumberColumn($result1[0]->nome_municipio);
+                  array_push($array0, $result1[0]->tmortalidade_estado);
+                  array_push($array1, $result1[1]->tmortalidade_estado);
+                  array_push($array2, $result1[2]->tmortalidade_estado);
+                  $historico->addNumberColumn($result1[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result1[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
               if (count($result2) != 0) {
-                  array_push($array0, $result2[0]->tmortalidade_municipio);
-                  array_push($array1, $result2[1]->tmortalidade_municipio);
-                  array_push($array2, $result2[2]->tmortalidade_municipio);
-                  $historico->addNumberColumn($result2[0]->nome_municipio);
+                  array_push($array0, $result2[0]->tmortalidade_estado);
+                  array_push($array1, $result2[1]->tmortalidade_estado);
+                  array_push($array2, $result2[2]->tmortalidade_estado);
+                  $historico->addNumberColumn($result2[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result2[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
 
 
               if (count($result3) != 0) {
-                  array_push($array0, $result3[0]->tmortalidade_municipio);
-                  array_push($array1, $result3[1]->tmortalidade_municipio);
-                  array_push($array2, $result3[2]->tmortalidade_municipio);
-                  $historico->addNumberColumn($result3[0]->nome_municipio);
+                  array_push($array0, $result3[0]->tmortalidade_estado);
+                  array_push($array1, $result3[1]->tmortalidade_estado);
+                  array_push($array2, $result3[2]->tmortalidade_estado);
+                  $historico->addNumberColumn($result3[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result3[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -548,43 +596,43 @@ class selectController extends Controller
               case 'analf':
 
               if (count($result1) != 0) {
-                  array_push($array0, $result1[0]->tanalfabetismo_municipio);
-                  array_push($array1, $result1[1]->tanalfabetismo_municipio);
-                  array_push($array2, $result1[2]->tanalfabetismo_municipio);
-                  $historico->addNumberColumn($result1[0]->nome_municipio);
+                  array_push($array0, $result1[0]->tanalfabetismo_estado);
+                  array_push($array1, $result1[1]->tanalfabetismo_estado);
+                  array_push($array2, $result1[2]->tanalfabetismo_estado);
+                  $historico->addNumberColumn($result1[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result1[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
               if (count($result2) != 0) {
-                  array_push($array0, $result2[0]->tanalfabetismo_municipio);
-                  array_push($array1, $result2[1]->tanalfabetismo_municipio);
-                  array_push($array2, $result2[2]->tanalfabetismo_municipio);
-                  $historico->addNumberColumn($result2[0]->nome_municipio);
+                  array_push($array0, $result2[0]->tanalfabetismo_estado);
+                  array_push($array1, $result2[1]->tanalfabetismo_estado);
+                  array_push($array2, $result2[2]->tanalfabetismo_estado);
+                  $historico->addNumberColumn($result2[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result2[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
 
 
               if (count($result3) != 0) {
-                  array_push($array0, $result3[0]->tanalfabetismo_municipio);
-                  array_push($array1, $result3[1]->tanalfabetismo_municipio);
-                  array_push($array2, $result3[2]->tanalfabetismo_municipio);
-                  $historico->addNumberColumn($result3[0]->nome_municipio);
+                  array_push($array0, $result3[0]->tanalfabetismo_estado);
+                  array_push($array1, $result3[1]->tanalfabetismo_estado);
+                  array_push($array2, $result3[2]->tanalfabetismo_estado);
+                  $historico->addNumberColumn($result3[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result3[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -594,43 +642,43 @@ class selectController extends Controller
               case 'renda':
 
               if (count($result1) != 0) {
-                  array_push($array0, $result1[0]->trendapercapita_municipio);
-                  array_push($array1, $result1[1]->trendapercapita_municipio);
-                  array_push($array2, $result1[2]->trendapercapita_municipio);
-                  $historico->addNumberColumn($result1[0]->nome_municipio);
+                  array_push($array0, $result1[0]->trendapercapita_estado);
+                  array_push($array1, $result1[1]->trendapercapita_estado);
+                  array_push($array2, $result1[2]->trendapercapita_estado);
+                  $historico->addNumberColumn($result1[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result1[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result1[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result1[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
               if (count($result2) != 0) {
-                  array_push($array0, $result2[0]->trendapercapita_municipio);
-                  array_push($array1, $result2[1]->trendapercapita_municipio);
-                  array_push($array2, $result2[2]->trendapercapita_municipio);
-                  $historico->addNumberColumn($result2[0]->nome_municipio);
+                  array_push($array0, $result2[0]->trendapercapita_estado);
+                  array_push($array1, $result2[1]->trendapercapita_estado);
+                  array_push($array2, $result2[2]->trendapercapita_estado);
+                  $historico->addNumberColumn($result2[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result2[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result2[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result2[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
 
 
               if (count($result3) != 0) {
-                  array_push($array0, $result3[0]->trendapercapita_municipio);
-                  array_push($array1, $result3[1]->trendapercapita_municipio);
-                  array_push($array2, $result3[2]->trendapercapita_municipio);
-                  $historico->addNumberColumn($result3[0]->nome_municipio);
+                  array_push($array0, $result3[0]->trendapercapita_estado);
+                  array_push($array1, $result3[1]->trendapercapita_estado);
+                  array_push($array2, $result3[2]->trendapercapita_estado);
+                  $historico->addNumberColumn($result3[0]->nome_estado);
 
                   if (!$mostraGrafico) {
-                      $nomeMun = $nomeMun . $result3[0]->nome_municipio;  // code...
+                      $nomeMun = $nomeMun . $result3[0]->nome_estado;  // code...
                   } else {
-                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_municipio;
+                      $nomeMun = $nomeMun . " x " . $result3[0]->nome_estado;
                   }
                   $mostraGrafico = true;
               }
@@ -901,7 +949,7 @@ class selectController extends Controller
                    ->addNumberColumn('IDH');
 
          foreach ($result as $row) {
-             $geoGraph->addRow(array($row->nome_municipio, $row->tidh));
+             $geoGraph->addRow(array($row->nome_estado, $row->tidh));
          }
          break;
 
@@ -914,7 +962,7 @@ class selectController extends Controller
                      ->addNumberColumn('Anafalbetismo');
 
                      foreach ($result as $row) {
-                         $geoGraph->addRow(array($row->nome_municipio, $row->tanalfabetismo_municipio));
+                         $geoGraph->addRow(array($row->nome_estado, $row->tanalfabetismo_estado));
                      }
             break;
 
@@ -927,7 +975,7 @@ class selectController extends Controller
                        ->addNumberColumn('Mortalidade');
 
                        foreach ($result as $row) {
-                           $geoGraph->addRow(array($row->nome_municipio, $row->tmortalidade_municipio));
+                           $geoGraph->addRow(array($row->nome_estado, $row->tmortalidade_estado));
                        }
               break;
 
@@ -940,7 +988,7 @@ class selectController extends Controller
                          ->addNumberColumn('RendaPerCapita');
 
                          foreach ($result as $row) {
-                             $geoGraph->addRow(array($row->nome_municipio, $row->trendapercapita_municipio));
+                             $geoGraph->addRow(array($row->nome_estado, $row->trendapercapita_estado));
                          }
                 break;
 

@@ -17,8 +17,12 @@
             </div>
       {{ Form::submit('Submit', ['class' => 'btn btn-info']) }} {{ Form::close() }}
 
+
     </div>
+  </div>
+  <br>
     @if ($mostraGrafico)
+      <div style='width: 1000px; margin:0 auto;' class="panel panel-success animatedLong fadeIn">
     <div class="panel-heading">
       <h1>Relatório GeoEspacial de {{$titulo}} em {{$ano}}</div>
   <div class= "panel-body"> <div id="pop-div"></div> </div>

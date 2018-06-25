@@ -15,10 +15,16 @@
           <div class="form-group">
             {{ Form::label('ano', 'Ano: ') }} {{ Form::text('ano', null, ['class' => 'form-control']) }}
           </div>
-          {{ Form::submit('Buscar', ['class' => 'btn btn-info']) }} {{ Form::close() }}
-          <br>
+          {{ Form::submit('Buscar', ['class' => 'btn btn-info']) }}
 
-<a href="{{action('selectController@getCSV')}}" class="btn btn-primary" style="width: 200px;">Exportar para CSV</a>
+
+    <table style="margin-top: 10px;">
+      <tr>
+        <td> {{ Form::submit('Mostrar Tudo', ['class' => 'btn btn-success']) }} {{ Form::close() }} </td>
+<td style="padding-left: 10px;"> <a href="{{action('selectController@getCSV')}}" class="btn btn-primary" style="width: 200px;">Exportar para CSV</a> </td>
+
+</tr>
+</table>
         </div>
         <div class="panel-group" style="text-align: center; width: 1000px; margin:0 auto;">
 
