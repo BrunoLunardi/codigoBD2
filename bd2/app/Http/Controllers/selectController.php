@@ -705,7 +705,9 @@ class selectController extends Controller
             $titulo = '-1';
         }
         \Lava::LineChart('historicoIDHM', $historico, [
-            'height' => '300'
+            'height' => '300',
+             'pointSize'          => 10,
+             
 
       ]);
 
@@ -927,7 +929,8 @@ class selectController extends Controller
             $titulo = '-1';
         }
         \Lava::LineChart('historicoIDHM', $historico, [
-            'height' => '300'
+            'height' => '300',
+            'pointSize'          => 10,
 
       ]);
 
